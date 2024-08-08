@@ -11,7 +11,7 @@ type In struct {
 	In []interface{} `json:"$in"`
 }
 
-func (f In) FromJSON(data interface{}) Filter {
+func (f In) FromJSON(data interface{}) IFilter {
 	return FromJson[In](data)
 }
 

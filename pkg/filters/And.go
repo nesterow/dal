@@ -17,6 +17,6 @@ func (f And) ToSQLPart(ctx Context) string {
 	return fmt.Sprintf("(%s)", value)
 }
 
-func (a And) FromJSON(data interface{}) Filter {
+func (a And) FromJSON(data interface{}) IFilter {
 	return FromJson[And](data)
 }

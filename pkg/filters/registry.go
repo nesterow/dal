@@ -1,6 +1,10 @@
 package filters
 
-var FilterRegistry = map[string]Filter{
+import (
+	"reflect"
+)
+
+var FilterRegistry = map[string]IFilter{
 	"And":        &And{},
 	"Or":         &Or{},
 	"Eq":         &Eq{},
@@ -18,12 +22,17 @@ var FilterRegistry = map[string]Filter{
 	"NotLike":    &NotLike{},
 }
 
-func Convert(ctx Context, json interface{}) string {
+func Convert(ctx Context, data interface{}) (string, error) {
 	for _, t := range FilterRegistry {
-		value := t.FromJSON(json).ToSQLPart(ctx)
+		filter := t.FromJSON(data)
+		if reflect.DeepEqual(t, filter) {
+			continue
+		}
+		value := filter.ToSQLPart(ctx)
 		if value != "" {
-			return value
+			return value, nil
 		}
 	}
-	return ""
+	value := Eq{Eq: data}.ToSQLPart(ctx)
+	return value, nil
 }

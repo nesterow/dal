@@ -17,6 +17,6 @@ func (f Or) ToSQLPart(ctx Context) string {
 	return fmt.Sprintf("(%s)", value)
 }
 
-func (a Or) FromJSON(data interface{}) Filter {
+func (a Or) FromJSON(data interface{}) IFilter {
 	return FromJson[Or](data)
 }

@@ -8,7 +8,7 @@ type Lte struct {
 	Lte interface{} `json:"$lte"`
 }
 
-func (f Lte) FromJSON(data interface{}) Filter {
+func (f Lte) FromJSON(data interface{}) IFilter {
 	return FromJson[Lte](data)
 }
 

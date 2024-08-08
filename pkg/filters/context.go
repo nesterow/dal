@@ -14,6 +14,21 @@ type SQLiteContext struct {
 	FieldName  string
 }
 
+func (c SQLiteContext) New(opts map[string]string) Context {
+	ta := opts["TableAlias"]
+	if ta == "" {
+		ta = c.TableAlias
+	}
+	fn := opts["FieldName"]
+	if fn == "" {
+		fn = c.FieldName
+	}
+	return SQLiteContext{
+		TableAlias: ta,
+		FieldName:  fn,
+	}
+}
+
 func (c SQLiteContext) GetFieldName() string {
 	if strings.Contains(c.FieldName, ".") {
 		return c.FieldName

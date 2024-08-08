@@ -6,7 +6,7 @@ type Like struct {
 	Like interface{} `json:"$like"`
 }
 
-func (f Like) FromJSON(data interface{}) Filter {
+func (f Like) FromJSON(data interface{}) IFilter {
 	return FromJson[Like](data)
 }
 

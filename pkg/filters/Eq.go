@@ -8,7 +8,7 @@ type Eq struct {
 	Eq interface{} `json:"$eq"`
 }
 
-func (f Eq) FromJSON(data interface{}) Filter {
+func (f Eq) FromJSON(data interface{}) IFilter {
 	return FromJson[Eq](data)
 }
 

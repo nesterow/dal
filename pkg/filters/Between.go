@@ -10,7 +10,7 @@ type Between struct {
 	Between []interface{} `json:"$between"`
 }
 
-func (f Between) FromJSON(data interface{}) Filter {
+func (f Between) FromJSON(data interface{}) IFilter {
 	return FromJson[Between](data)
 }
 

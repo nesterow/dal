@@ -11,7 +11,7 @@ type NotIn struct {
 	NotIn []interface{} `json:"$nin"`
 }
 
-func (f NotIn) FromJSON(data interface{}) Filter {
+func (f NotIn) FromJSON(data interface{}) IFilter {
 	return FromJson[NotIn](data)
 }
 

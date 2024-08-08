@@ -6,7 +6,7 @@ type Ne struct {
 	Ne interface{} `json:"$ne"`
 }
 
-func (f Ne) FromJSON(data interface{}) Filter {
+func (f Ne) FromJSON(data interface{}) IFilter {
 	return FromJson[Ne](data)
 }
 

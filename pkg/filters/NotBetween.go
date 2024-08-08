@@ -10,7 +10,7 @@ type NotBetween struct {
 	NotBetween []interface{} `json:"$nbetween"`
 }
 
-func (f NotBetween) FromJSON(data interface{}) Filter {
+func (f NotBetween) FromJSON(data interface{}) IFilter {
 	return FromJson[NotBetween](data)
 }
 

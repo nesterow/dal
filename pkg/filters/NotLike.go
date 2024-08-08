@@ -6,7 +6,7 @@ type NotLike struct {
 	NotLike interface{} `json:"$nlike"`
 }
 
-func (f NotLike) FromJSON(data interface{}) Filter {
+func (f NotLike) FromJSON(data interface{}) IFilter {
 	return FromJson[NotLike](data)
 }
 

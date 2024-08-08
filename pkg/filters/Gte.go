@@ -8,7 +8,7 @@ type Gte struct {
 	Gte interface{} `json:"$gte"`
 }
 
-func (f Gte) FromJSON(data interface{}) Filter {
+func (f Gte) FromJSON(data interface{}) IFilter {
 	return FromJson[Gte](data)
 }
 

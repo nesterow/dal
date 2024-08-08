@@ -8,7 +8,7 @@ type Lt struct {
 	Lt interface{} `json:"$lt"`
 }
 
-func (f Lt) FromJSON(data interface{}) Filter {
+func (f Lt) FromJSON(data interface{}) IFilter {
 	return FromJson[Lt](data)
 }
 

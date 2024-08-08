@@ -6,7 +6,7 @@ type Glob struct {
 	Glob interface{} `json:"$glob"`
 }
 
-func (f Glob) FromJSON(data interface{}) Filter {
+func (f Glob) FromJSON(data interface{}) IFilter {
 	return FromJson[Glob](data)
 }
 
