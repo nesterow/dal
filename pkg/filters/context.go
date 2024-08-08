@@ -14,7 +14,7 @@ type SQLiteContext struct {
 	FieldName  string
 }
 
-func (c SQLiteContext) New(opts map[string]string) Context {
+func (c SQLiteContext) New(opts CtxOpts) Context {
 	ta := opts["TableAlias"]
 	if ta == "" {
 		ta = c.TableAlias

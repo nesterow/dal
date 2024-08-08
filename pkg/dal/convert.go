@@ -1,21 +1,19 @@
 package dal
 
 import (
-	"fmt"
 	"strings"
 
 	filters "l12.xyz/dal/filters"
 )
 
-func CovertFind(find filters.Find, ctx filters.Context) string {
+func CovertFind(find Find, ctx Context) string {
 	expressions := []string{}
 	for key, value := range find {
-		values, err := filters.Convert(ctx.New(map[string]string{
+		context := ctx.New(CtxOpts{
 			"FieldName": key,
-		}), value)
+		})
+		values, _ := filters.Convert(context, value)
 		expressions = append(expressions, values)
-		fmt.Println(err)
-
 	}
 	return strings.Join(expressions, " AND ")
 }

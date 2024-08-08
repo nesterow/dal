@@ -1,7 +1,8 @@
 package filters
 
+type CtxOpts map[string]string
 type Context interface {
-	New(opts map[string]string) Context
+	New(opts CtxOpts) Context
 	GetFieldName() string
 	NormalizeValue(interface{}) interface{}
 }

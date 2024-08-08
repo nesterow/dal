@@ -7,10 +7,10 @@ import (
 )
 
 func TestConvertFind(t *testing.T) {
-	find := f.Find{
+	find := Find{
 		"test":  "1",
 		"test2": "2",
-		"test3": f.Filter{
+		"test3": Filter{
 			"$ne": 1,
 		},
 	}
