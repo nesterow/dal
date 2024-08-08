@@ -1,0 +1,22 @@
+package filters
+
+import (
+	"fmt"
+	"strings"
+)
+
+type Or struct {
+	Or []string `json:"$or"`
+}
+
+func (f Or) ToSQLPart(ctx Context) string {
+	if f.Or == nil {
+		return ""
+	}
+	value := strings.Join(f.Or, " OR ")
+	return fmt.Sprintf("(%s)", value)
+}
+
+func (a Or) FromJSON(data interface{}) Filter {
+	return FromJson[Or](data)
+}

@@ -1,6 +1,8 @@
 package filters
 
 var FilterRegistry = map[string]Filter{
+	"And":        &And{},
+	"Or":         &Or{},
 	"Eq":         &Eq{},
 	"Ne":         &Ne{},
 	"Gt":         &Gt{},
@@ -8,9 +10,12 @@ var FilterRegistry = map[string]Filter{
 	"Lt":         &Lt{},
 	"Lte":        &Lte{},
 	"In":         &In{},
+	"Nin":        &NotIn{},
 	"Between":    &Between{},
 	"NotBetween": &NotBetween{},
 	"Glob":       &Glob{},
+	"Like":       &Like{},
+	"NotLike":    &NotLike{},
 }
 
 func Convert(ctx Context, json interface{}) string {
