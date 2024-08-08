@@ -1,6 +1,9 @@
 package dal
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Join struct {
 	For string `json:"$for"`
@@ -12,6 +15,44 @@ func (j Join) Convert(ctx Context) string {
 	if j.For == "" {
 		return ""
 	}
-	filter := CovertFind(j.Do, ctx)
-	return fmt.Sprintf("%s JOIN %s ON %s", j.As, j.For, filter)
+	filter := CovertFind(ctx, j.Do)
+	var as string = ""
+	if j.As != "" {
+		as = fmt.Sprintf("%s ", j.As)
+	}
+	return as + fmt.Sprintf("JOIN %s ON %s", j.For, filter)
+}
+
+func ConvertJoin(ctx Context, joins ...interface{}) []string {
+	var result []string
+	for _, join := range joins {
+		jstr, ok := join.(string)
+		if ok {
+			jjson := Join{}
+			err := json.Unmarshal([]byte(jstr), &jjson)
+			if err == nil {
+				result = append(result, jjson.Convert(ctx))
+			}
+			continue
+		}
+		jmap, ok := join.(map[string]interface{})
+		if ok {
+			jjson := Join{}
+			jstr, err := json.Marshal(jmap)
+			if err != nil {
+				continue
+			}
+			err = json.Unmarshal(jstr, &jjson)
+			if err == nil {
+				result = append(result, jjson.Convert(ctx))
+			}
+			continue
+		}
+		j, ok := join.(Join)
+		if !ok {
+			continue
+		}
+		result = append(result, j.Convert(ctx))
+	}
+	return result
 }

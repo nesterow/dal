@@ -7,23 +7,23 @@ import (
 	filters "l12.xyz/dal/filters"
 )
 
-func CovertFind(find Find, ctx Context) string {
-	return covert_find(find, ctx, "")
+func CovertFind(ctx Context, find Find) string {
+	return covert_find(ctx, find, "")
 }
 
-func covert_find(find Find, ctx Context, join string) string {
+func covert_find(ctx Context, find Find, join string) string {
 	if join == "" {
 		join = " AND "
 	}
 	expressions := []string{}
 	for key, value := range find {
 		if strings.Contains(key, "$and") {
-			v := covert_find(value.(Find), ctx, "")
+			v := covert_find(ctx, value.(Find), "")
 			expressions = append(expressions, fmt.Sprintf("(%s)", v))
 			continue
 		}
 		if strings.Contains(key, "$or") {
-			v := covert_find(value.(Find), ctx, " OR ")
+			v := covert_find(ctx, value.(Find), " OR ")
 			expressions = append(expressions, fmt.Sprintf("(%s)", v))
 			continue
 		}

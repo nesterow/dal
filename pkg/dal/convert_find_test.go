@@ -16,7 +16,7 @@ func TestConvertFind(t *testing.T) {
 	ctx := f.SQLiteContext{
 		TableAlias: "t",
 	}
-	result := CovertFind(find, ctx)
+	result := CovertFind(ctx, find)
 	if result == `t.exp > 1 AND t.impl = '1'` {
 		return
 	}
@@ -40,7 +40,7 @@ func TestConvertFindAnd(t *testing.T) {
 	ctx := f.SQLiteContext{
 		TableAlias: "t",
 	}
-	result := CovertFind(find, ctx)
+	result := CovertFind(ctx, find)
 	if result == `(t.a > 1 AND t.b < 10)` {
 		return
 	}
@@ -64,7 +64,7 @@ func TestConvertFindOr(t *testing.T) {
 	ctx := f.SQLiteContext{
 		TableAlias: "t",
 	}
-	result := CovertFind(find, ctx)
+	result := CovertFind(ctx, find)
 	if result == `(t.a > 1 OR t.b < 10)` {
 		return
 	}
