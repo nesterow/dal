@@ -23,9 +23,9 @@ var FilterRegistry = map[string]IFilter{
 }
 
 func Convert(ctx Context, data interface{}) (string, error) {
-	for _, t := range FilterRegistry {
-		filter := t.FromJSON(data)
-		if reflect.DeepEqual(t, filter) {
+	for _, impl := range FilterRegistry {
+		filter := impl.FromJSON(data)
+		if reflect.DeepEqual(impl, filter) {
 			continue
 		}
 		value := filter.ToSQLPart(ctx)
