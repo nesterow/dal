@@ -7,7 +7,7 @@ import (
 	filters "l12.xyz/dal/filters"
 )
 
-func CovertFind(ctx Context, find Find) string {
+func covertFind(ctx Context, find Find) string {
 	return covert_find(ctx, find, "")
 }
 
@@ -15,7 +15,7 @@ func covert_find(ctx Context, find Find, join string) string {
 	if join == "" {
 		join = " AND "
 	}
-	keys := AggregateSortedKeys([]Map{find})
+	keys := aggregateSortedKeys([]Map{find})
 	expressions := []string{}
 	for _, key := range keys {
 		value := find[key]

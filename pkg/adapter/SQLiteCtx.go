@@ -14,6 +14,10 @@ type SQLiteContext struct {
 }
 
 func (c SQLiteContext) New(opts CtxOpts) Context {
+	tn := opts["TableName"]
+	if tn == "" {
+		tn = c.TableName
+	}
 	ta := opts["TableAlias"]
 	if ta == "" {
 		ta = c.TableAlias
@@ -23,6 +27,7 @@ func (c SQLiteContext) New(opts CtxOpts) Context {
 		fn = c.FieldName
 	}
 	return SQLiteContext{
+		TableName:  tn,
 		TableAlias: ta,
 		FieldName:  fn,
 	}
@@ -40,6 +45,16 @@ func (c SQLiteContext) GetFieldName() string {
 		return c.TableAlias + "." + c.FieldName
 	}
 	return c.FieldName
+}
+
+func (c SQLiteContext) GetColumnName(key string) string {
+	if strings.Contains(key, ".") {
+		return key
+	}
+	if c.TableAlias != "" {
+		return c.TableAlias + "." + key
+	}
+	return key
 }
 
 func (c SQLiteContext) NormalizeValue(value interface{}) interface{} {

@@ -15,7 +15,7 @@ func (j Join) Convert(ctx Context) string {
 	if j.For == "" {
 		return ""
 	}
-	filter := CovertFind(ctx, j.Do)
+	filter := covertFind(ctx, j.Do)
 	var as string = ""
 	if j.As != "" {
 		as = fmt.Sprintf("%s ", j.As)
@@ -23,7 +23,7 @@ func (j Join) Convert(ctx Context) string {
 	return as + fmt.Sprintf("JOIN %s ON %s", j.For, filter)
 }
 
-func ConvertJoin(ctx Context, joins ...interface{}) []string {
+func convertJoin(ctx Context, joins ...interface{}) []string {
 	var result []string
 	for _, join := range joins {
 		jstr, ok := join.(string)

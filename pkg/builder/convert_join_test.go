@@ -39,7 +39,7 @@ func TestConvertJoin(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := ConvertJoin(ctx, joins...)
+	result := convertJoin(ctx, joins...)
 	if result[1] != `JOIN artist a ON a.impl = t.impl` {
 		t.Errorf(`Expected "JOIN artist a ON a.impl = t.impl", got %s`, result[1])
 	}
@@ -56,7 +56,7 @@ func TestConvertMap(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := ConvertJoin(ctx, joins...)
+	result := convertJoin(ctx, joins...)
 	if result[0] != `LEFT JOIN artist a ON a.impl = t.impl` {
 		t.Errorf(`Expected "LEFT JOIN artist a ON a.impl = t.impl", got %s`, result[0])
 	}
