@@ -1,15 +1,14 @@
 package filters
 
 import (
-	"slices"
 	"strconv"
 	"strings"
-	"unicode"
 
 	utils "l12.xyz/dal/utils"
 )
 
 type SQLiteContext struct {
+	TableName  string
 	TableAlias string
 	FieldName  string
 }
@@ -29,6 +28,10 @@ func (c SQLiteContext) New(opts CtxOpts) Context {
 	}
 }
 
+func (c SQLiteContext) GetTableName() string {
+	return c.TableName
+}
+
 func (c SQLiteContext) GetFieldName() string {
 	if strings.Contains(c.FieldName, ".") {
 		return c.FieldName
@@ -41,7 +44,7 @@ func (c SQLiteContext) GetFieldName() string {
 
 func (c SQLiteContext) NormalizeValue(value interface{}) interface{} {
 	str, ok := value.(string)
-	if isSQLFunction(str) {
+	if utils.IsSQLFunction(str) {
 		return str
 	}
 	if strings.Contains(str, ".") {
@@ -57,26 +60,5 @@ func (c SQLiteContext) NormalizeValue(value interface{}) interface{} {
 	if err != nil {
 		return str
 	}
-	return "'" + escapeSingleQuote(string(val)) + "'"
-}
-
-func isSQLFunction(str string) bool {
-	stopChars := []string{" ", "_", "-", ".", "("}
-	isUpper := false
-	for _, char := range str {
-		if slices.Contains(stopChars, string(char)) {
-			break
-		}
-		if unicode.IsUpper(char) {
-			isUpper = true
-		} else {
-			isUpper = false
-			break
-		}
-	}
-	return isUpper
-}
-
-func escapeSingleQuote(str string) string {
-	return strings.ReplaceAll(str, "'", "''")
+	return "'" + utils.EscapeSingleQuote(string(val)) + "'"
 }
