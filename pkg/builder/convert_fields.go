@@ -5,10 +5,13 @@ import (
 	"strings"
 )
 
-func ConvertFields(ctx Context, fields []Map) (string, error) {
+func convertFields(fields []Map) (string, error) {
 	var expressions []string
 	for _, fieldAssoc := range fields {
-		for field, as := range fieldAssoc {
+		keys := aggregateSortedKeys([]Map{fieldAssoc})
+		for _, key := range keys {
+			field := key
+			as := fieldAssoc[key]
 			asBool, ok := as.(bool)
 			if ok {
 				if asBool {

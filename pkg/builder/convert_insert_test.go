@@ -13,7 +13,7 @@ func TestConvertInsert(t *testing.T) {
 		{"a": "1", "b": 2},
 		{"b": 2, "a": "1", "c": 3},
 	}
-	result, _ := ConvertInsert(ctx, insert)
+	result, _ := convertInsert(ctx, insert)
 
 	if result.Statement != `INSERT INTO test (a,b,c) VALUES (?,?,?)` {
 		t.Errorf(`Expected "INSERT INTO test (a,b,c) VALUES (?,?,?)", got %s`, result.Statement)

@@ -7,10 +7,12 @@ import (
 
 type UpdateData struct {
 	Statement string
+	Upsert    string
+	UpsertExp string
 	Values    []interface{}
 }
 
-func ConvertUpdate(ctx Context, updates Map) (UpdateData, error) {
+func convertUpdate(ctx Context, updates Map) UpdateData {
 	keys := aggregateSortedKeys([]Map{updates})
 	set := make([]string, 0)
 	values := make([]interface{}, 0)
@@ -25,5 +27,5 @@ func ConvertUpdate(ctx Context, updates Map) (UpdateData, error) {
 	return UpdateData{
 		Statement: sfmt,
 		Values:    values,
-	}, nil
+	}
 }

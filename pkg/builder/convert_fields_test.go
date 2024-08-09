@@ -5,11 +5,7 @@ import (
 )
 
 func TestConvertFieldsBool(t *testing.T) {
-	ctx := SQLiteContext{
-		TableAlias: "t",
-		FieldName:  "test",
-	}
-	result, err := ConvertFields(ctx, []Map{
+	result, err := convertFields([]Map{
 		{"test": true},
 		{"test2": false},
 	})
@@ -22,11 +18,7 @@ func TestConvertFieldsBool(t *testing.T) {
 }
 
 func TestConvertFieldsInt(t *testing.T) {
-	ctx := SQLiteContext{
-		TableAlias: "t",
-		FieldName:  "test",
-	}
-	result, err := ConvertFields(ctx, []Map{
+	result, err := convertFields([]Map{
 		{"test": 0},
 		{"test2": 1},
 	})
@@ -39,11 +31,7 @@ func TestConvertFieldsInt(t *testing.T) {
 }
 
 func TestConvertFieldsStr(t *testing.T) {
-	ctx := SQLiteContext{
-		TableAlias: "t",
-		FieldName:  "test",
-	}
-	result, err := ConvertFields(ctx, []Map{
+	result, err := convertFields([]Map{
 		{"t.test": "Test"},
 		{"SUM(t.test, t.int)": "Sum"},
 	})

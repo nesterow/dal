@@ -10,7 +10,7 @@ type InsertData struct {
 	Values    []interface{}
 }
 
-func ConvertInsert(ctx Context, inserts []Map) (InsertData, error) {
+func convertInsert(ctx Context, inserts []Map) (InsertData, error) {
 	keys := aggregateSortedKeys(inserts)
 	placeholder := make([]string, 0)
 	for range keys {
@@ -27,7 +27,8 @@ func ConvertInsert(ctx Context, inserts []Map) (InsertData, error) {
 	}
 
 	sfmt := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s)", ctx.GetTableName(),
+		"INSERT INTO %s (%s) VALUES (%s)",
+		ctx.GetTableName(),
 		strings.Join(keys, ","),
 		strings.Join(placeholder, ","),
 	)

@@ -9,7 +9,7 @@ func TestConvertSort(t *testing.T) {
 		TableAlias: "t",
 		FieldName:  "test",
 	}
-	result, err := ConvertSort(ctx, Map{
+	result, err := convertSort(ctx, Map{
 		"a": -1,
 		"c": "desc",
 		"b": 1,

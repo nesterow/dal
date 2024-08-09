@@ -1,12 +1,13 @@
 package builder
 
 import (
+	"fmt"
 	"strings"
 
 	"l12.xyz/dal/utils"
 )
 
-func ConvertGroup(ctx Context, keys []string) string {
+func convertGroup(ctx Context, keys []string) string {
 	set := utils.Map(keys, ctx.GetColumnName)
-	return strings.Join(set, ", ")
+	return fmt.Sprintf("GROUP BY %s", strings.Join(set, ", "))
 }
