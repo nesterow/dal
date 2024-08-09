@@ -11,7 +11,7 @@ type InsertData struct {
 }
 
 func ConvertInsert(ctx Context, inserts []Map) (InsertData, error) {
-	keys := AggregateKeys(inserts)
+	keys := AggregateSortedKeys(inserts)
 	placeholder := make([]string, 0)
 	for range keys {
 		placeholder = append(placeholder, "?")

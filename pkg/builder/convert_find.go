@@ -15,8 +15,10 @@ func covert_find(ctx Context, find Find, join string) string {
 	if join == "" {
 		join = " AND "
 	}
+	keys := AggregateSortedKeys([]Map{find})
 	expressions := []string{}
-	for key, value := range find {
+	for _, key := range keys {
+		value := find[key]
 		if strings.Contains(key, "$and") {
 			v := covert_find(ctx, value.(Find), "")
 			expressions = append(expressions, fmt.Sprintf("(%s)", v))

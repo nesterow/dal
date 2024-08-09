@@ -2,7 +2,7 @@ package builder
 
 import "sort"
 
-func AggregateKeys(maps []Map) []string {
+func AggregateSortedKeys(maps []Map) []string {
 	set := make(map[string]int)
 	keys := make([]string, 0)
 	for _, item := range maps {
