@@ -1,4 +1,4 @@
-package dal
+package builder
 
 import (
 	adapter "l12.xyz/dal/adapter"

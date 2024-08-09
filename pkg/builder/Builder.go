@@ -1,4 +1,4 @@
-package dal
+package builder
 
 type SQLParts struct {
 	operation string

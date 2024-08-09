@@ -1,4 +1,4 @@
-module l12.xyz/dal
+module l12.xyz/dal/builder
 
 go 1.22.6
 
