@@ -2,12 +2,10 @@ package dal
 
 import (
 	"testing"
-
-	filters "l12.xyz/dal/filters"
 )
 
 func TestConvertFieldsBool(t *testing.T) {
-	ctx := filters.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 		FieldName:  "test",
 	}
@@ -24,7 +22,7 @@ func TestConvertFieldsBool(t *testing.T) {
 }
 
 func TestConvertFieldsInt(t *testing.T) {
-	ctx := filters.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 		FieldName:  "test",
 	}
@@ -41,7 +39,7 @@ func TestConvertFieldsInt(t *testing.T) {
 }
 
 func TestConvertFieldsStr(t *testing.T) {
-	ctx := filters.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 		FieldName:  "test",
 	}

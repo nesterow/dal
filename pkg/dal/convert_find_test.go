@@ -2,8 +2,6 @@ package dal
 
 import (
 	"testing"
-
-	f "l12.xyz/dal/filters"
 )
 
 func TestConvertFind(t *testing.T) {
@@ -13,7 +11,7 @@ func TestConvertFind(t *testing.T) {
 			"$gt": 1,
 		},
 	}
-	ctx := f.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
 	result := CovertFind(ctx, find)
@@ -37,7 +35,7 @@ func TestConvertFindAnd(t *testing.T) {
 			},
 		},
 	}
-	ctx := f.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
 	result := CovertFind(ctx, find)
@@ -61,7 +59,7 @@ func TestConvertFindOr(t *testing.T) {
 			},
 		},
 	}
-	ctx := f.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
 	result := CovertFind(ctx, find)

@@ -3,8 +3,10 @@ package dal
 import (
 	"testing"
 
-	f "l12.xyz/dal/filters"
+	adapter "l12.xyz/dal/adapter"
 )
+
+type SQLiteContext = adapter.SQLiteContext
 
 func TestJoin(t *testing.T) {
 	j := Join{
@@ -14,7 +16,7 @@ func TestJoin(t *testing.T) {
 		},
 		As: "LEFT",
 	}
-	ctx := f.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
 	result := j.Convert(ctx)
@@ -34,7 +36,7 @@ func TestConvertJoin(t *testing.T) {
 			},
 		},
 	}
-	ctx := f.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
 	result := ConvertJoin(ctx, joins...)
@@ -51,7 +53,7 @@ func TestConvertMap(t *testing.T) {
 	joins := []interface{}{
 		Map{"$for": "artist a", "$do": Map{"a.impl": "t.impl"}, "$as": "LEFT"},
 	}
-	ctx := f.SQLiteContext{
+	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
 	result := ConvertJoin(ctx, joins...)

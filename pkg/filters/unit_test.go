@@ -2,7 +2,11 @@ package filters
 
 import (
 	"testing"
+
+	adapter "l12.xyz/dal/adapter"
 )
+
+type SQLiteContext = adapter.SQLiteContext
 
 func TestEq(t *testing.T) {
 	ctx := SQLiteContext{

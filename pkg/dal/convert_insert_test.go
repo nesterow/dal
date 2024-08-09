@@ -3,12 +3,10 @@ package dal
 import (
 	"fmt"
 	"testing"
-
-	filters "l12.xyz/dal/filters"
 )
 
 func TestConvertInsert(t *testing.T) {
-	ctx := filters.SQLiteContext{
+	ctx := SQLiteContext{
 		TableName:  "test",
 		TableAlias: "t",
 	}

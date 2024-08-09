@@ -1,6 +1,7 @@
 package dal
 
 import (
+	adapter "l12.xyz/dal/adapter"
 	filters "l12.xyz/dal/filters"
 )
 
@@ -10,5 +11,5 @@ type Find = filters.Find
 type Query = filters.Find
 type Filter = filters.Filter
 type Is = filters.Filter
-type Context = filters.Context
-type CtxOpts = filters.CtxOpts
+type Context = adapter.Context
+type CtxOpts = adapter.CtxOpts
