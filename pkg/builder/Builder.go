@@ -5,6 +5,13 @@ import (
 	"strings"
 )
 
+type Builder struct {
+	TableName  string
+	TableAlias string
+	Parts      SQLParts
+	Ctx        Context
+}
+
 type SQLParts struct {
 	Operation string
 	From      string
@@ -19,13 +26,6 @@ type SQLParts struct {
 	OffsetExp string
 	Insert    InsertData
 	Update    UpdateData
-}
-
-type Builder struct {
-	Parts      SQLParts
-	TableName  string
-	TableAlias string
-	Ctx        Context
 }
 
 func New(ctx Context) *Builder {
@@ -135,6 +135,8 @@ func (b *Builder) OnConflict(fields ...string) *Builder {
 	if b.Parts.Operation == "UPDATE" {
 		b.Parts.Update.Upsert = convertConflict(b.Ctx, fields...)
 		b.Parts.Update.UpsertExp = "DO NOTHING"
+	} else {
+		panic("OnConflict is only available for UPDATE operation")
 	}
 	return b
 }
@@ -142,6 +144,8 @@ func (b *Builder) OnConflict(fields ...string) *Builder {
 func (b *Builder) DoUpdate(fields ...string) *Builder {
 	if b.Parts.Operation == "UPDATE" {
 		b.Parts.Update.UpsertExp = convertUpsert(fields)
+	} else {
+		panic("DoUpdate is only available for UPDATE operation")
 	}
 	return b
 }
@@ -149,6 +153,8 @@ func (b *Builder) DoUpdate(fields ...string) *Builder {
 func (b *Builder) DoNothing() *Builder {
 	if b.Parts.Operation == "UPDATE" {
 		b.Parts.Update.UpsertExp = "DO NOTHING"
+	} else {
+		panic("DoNothing is only available for UPDATE operation")
 	}
 	return b
 }

@@ -2,7 +2,7 @@ module l12.xyz/dal/builder
 
 go 1.22.6
 
-require l12.xyz/dal/utils v0.0.0 // indirect
+require l12.xyz/dal/utils v0.0.0
 
 replace l12.xyz/dal/utils v0.0.0 => ../utils
 
