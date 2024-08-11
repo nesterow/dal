@@ -10,27 +10,33 @@ type InsertData struct {
 	Values    []interface{}
 }
 
-func convertInsert(ctx Context, inserts []Map) (InsertData, error) {
+func convertInsert(ctx Dialect, inserts []Map) (InsertData, error) {
 	keys := aggregateSortedKeys(inserts)
-	placeholder := make([]string, 0)
+	posEnum := make([]string, 0)
 	for range keys {
-		placeholder = append(placeholder, "?")
+		posEnum = append(posEnum, "?")
 	}
 
+	placeholder := strings.Join(posEnum, ",")
+	positional := []string{}
 	values := make([]interface{}, 0)
 	for _, insert := range inserts {
 		vals := make([]interface{}, 0)
 		for _, key := range keys {
 			vals = append(vals, insert[key])
 		}
-		values = append(values, vals)
+		values = append(values, vals...)
+		positional = append(
+			positional,
+			fmt.Sprintf("(%s)", placeholder),
+		)
 	}
 
 	sfmt := fmt.Sprintf(
-		"INSERT INTO %s (%s) VALUES (%s)",
+		"INSERT INTO %s (%s) VALUES %s",
 		ctx.GetTableName(),
 		strings.Join(keys, ","),
-		strings.Join(placeholder, ","),
+		strings.Join(positional, ","),
 	)
 	return InsertData{
 		Statement: sfmt,

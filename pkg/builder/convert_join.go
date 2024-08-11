@@ -11,7 +11,7 @@ type Join struct {
 	As  string `json:"$as"`
 }
 
-func (j Join) Convert(ctx Context) string {
+func (j Join) Convert(ctx Dialect) string {
 	if j.For == "" {
 		return ""
 	}
@@ -23,7 +23,7 @@ func (j Join) Convert(ctx Context) string {
 	return as + fmt.Sprintf("JOIN %s ON %s", j.For, filter)
 }
 
-func convertJoin(ctx Context, joins ...interface{}) []string {
+func convertJoin(ctx Dialect, joins ...interface{}) []string {
 	var result []string
 	for _, join := range joins {
 		jstr, ok := join.(string)

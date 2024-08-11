@@ -15,7 +15,7 @@ func (f NotIn) FromJSON(data interface{}) IFilter {
 	return FromJson[NotIn](data)
 }
 
-func (f NotIn) ToSQLPart(ctx Context) string {
+func (f NotIn) ToSQLPart(ctx Dialect) string {
 	if f.NotIn == nil {
 		return ""
 	}

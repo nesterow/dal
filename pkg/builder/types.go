@@ -11,5 +11,5 @@ type Find = filters.Find
 type Query = filters.Find
 type Filter = filters.Filter
 type Is = filters.Filter
-type Context = adapter.Context
-type CtxOpts = adapter.CtxOpts
+type Dialect = adapter.Dialect
+type DialectOpts = adapter.DialectOpts

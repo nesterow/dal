@@ -7,13 +7,13 @@ import (
 	utils "l12.xyz/dal/utils"
 )
 
-type SQLiteContext struct {
+type SQLite struct {
 	TableName  string
 	TableAlias string
 	FieldName  string
 }
 
-func (c SQLiteContext) New(opts CtxOpts) Context {
+func (c SQLite) New(opts DialectOpts) Dialect {
 	tn := opts["TableName"]
 	if tn == "" {
 		tn = c.TableName
@@ -26,18 +26,18 @@ func (c SQLiteContext) New(opts CtxOpts) Context {
 	if fn == "" {
 		fn = c.FieldName
 	}
-	return SQLiteContext{
+	return SQLite{
 		TableName:  tn,
 		TableAlias: ta,
 		FieldName:  fn,
 	}
 }
 
-func (c SQLiteContext) GetTableName() string {
+func (c SQLite) GetTableName() string {
 	return c.TableName
 }
 
-func (c SQLiteContext) GetFieldName() string {
+func (c SQLite) GetFieldName() string {
 	if strings.Contains(c.FieldName, ".") {
 		return c.FieldName
 	}
@@ -47,7 +47,7 @@ func (c SQLiteContext) GetFieldName() string {
 	return c.FieldName
 }
 
-func (c SQLiteContext) GetColumnName(key string) string {
+func (c SQLite) GetColumnName(key string) string {
 	if strings.Contains(key, ".") {
 		return key
 	}
@@ -57,7 +57,7 @@ func (c SQLiteContext) GetColumnName(key string) string {
 	return key
 }
 
-func (c SQLiteContext) NormalizeValue(value interface{}) interface{} {
+func (c SQLite) NormalizeValue(value interface{}) interface{} {
 	str, ok := value.(string)
 	if utils.IsSQLFunction(str) {
 		return str

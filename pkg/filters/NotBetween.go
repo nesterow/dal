@@ -14,7 +14,7 @@ func (f NotBetween) FromJSON(data interface{}) IFilter {
 	return FromJson[NotBetween](data)
 }
 
-func (f NotBetween) ToSQLPart(ctx Context) string {
+func (f NotBetween) ToSQLPart(ctx Dialect) string {
 	if f.NotBetween == nil {
 		return ""
 	}

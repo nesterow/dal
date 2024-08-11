@@ -6,7 +6,7 @@ import (
 	adapter "l12.xyz/dal/adapter"
 )
 
-type SQLiteContext = adapter.SQLiteContext
+type SQLiteContext = adapter.SQLite
 
 func TestEq(t *testing.T) {
 	ctx := SQLiteContext{

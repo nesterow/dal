@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func convertSort(ctx Context, sort Map) (string, error) {
+func convertSort(ctx Dialect, sort Map) (string, error) {
 	if sort == nil {
 		return "", nil
 	}

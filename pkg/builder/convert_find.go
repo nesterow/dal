@@ -7,11 +7,11 @@ import (
 	filters "l12.xyz/dal/filters"
 )
 
-func covertFind(ctx Context, find Find) string {
+func covertFind(ctx Dialect, find Find) string {
 	return covert_find(ctx, find, "")
 }
 
-func covert_find(ctx Context, find Find, join string) string {
+func covert_find(ctx Dialect, find Find, join string) string {
 	if join == "" {
 		join = " AND "
 	}
@@ -29,7 +29,7 @@ func covert_find(ctx Context, find Find, join string) string {
 			expressions = append(expressions, fmt.Sprintf("(%s)", v))
 			continue
 		}
-		context := ctx.New(CtxOpts{
+		context := ctx.New(DialectOpts{
 			"FieldName": key,
 		})
 		values, _ := filters.Convert(context, value)

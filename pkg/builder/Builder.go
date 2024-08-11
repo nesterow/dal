@@ -9,7 +9,7 @@ type Builder struct {
 	TableName  string
 	TableAlias string
 	Parts      SQLParts
-	Ctx        Context
+	Dialect    Dialect
 }
 
 type SQLParts struct {
@@ -28,20 +28,20 @@ type SQLParts struct {
 	Update    UpdateData
 }
 
-func New(ctx Context) *Builder {
+func New(dialect Dialect) *Builder {
 	return &Builder{
 		Parts: SQLParts{
 			Operation: "SELECT",
 			From:      "FROM",
 		},
-		Ctx: ctx,
+		Dialect: dialect,
 	}
 }
 
 func (b *Builder) In(table string) *Builder {
 	b.TableName, b.TableAlias = getTableAlias(table)
 	b.Parts.FromExp = table
-	b.Ctx = b.Ctx.New(CtxOpts{
+	b.Dialect = b.Dialect.New(DialectOpts{
 		"TableName":  b.TableName,
 		"TableAlias": b.TableAlias,
 	})
@@ -50,7 +50,7 @@ func (b *Builder) In(table string) *Builder {
 
 func (b *Builder) Find(query Find) *Builder {
 	b.Parts.FiterExp = covertFind(
-		b.Ctx,
+		b.Dialect,
 		query,
 	)
 	if b.Parts.Operation == "" {
@@ -79,18 +79,18 @@ func (b *Builder) Fields(fields ...Map) *Builder {
 }
 
 func (b *Builder) Join(joins ...interface{}) *Builder {
-	b.Parts.JoinExps = convertJoin(b.Ctx, joins...)
+	b.Parts.JoinExps = convertJoin(b.Dialect, joins...)
 	return b
 }
 
 func (b *Builder) Group(keys ...string) *Builder {
 	b.Parts.HavingExp = "HAVING"
-	b.Parts.GroupExp = convertGroup(b.Ctx, keys)
+	b.Parts.GroupExp = convertGroup(b.Dialect, keys)
 	return b
 }
 
 func (b *Builder) Sort(sort Map) *Builder {
-	b.Parts.OrderExp, _ = convertSort(b.Ctx, sort)
+	b.Parts.OrderExp, _ = convertSort(b.Dialect, sort)
 	return b
 }
 
@@ -110,7 +110,7 @@ func (b *Builder) Delete() *Builder {
 }
 
 func (b *Builder) Insert(inserts []Map) *Builder {
-	insertData, _ := convertInsert(b.Ctx, inserts)
+	insertData, _ := convertInsert(b.Dialect, inserts)
 	b.Parts = SQLParts{
 		Operation: "INSERT INTO",
 		Insert:    insertData,
@@ -119,7 +119,7 @@ func (b *Builder) Insert(inserts []Map) *Builder {
 }
 
 func (b *Builder) Set(updates Map) *Builder {
-	updateData := convertUpdate(b.Ctx, updates)
+	updateData := convertUpdate(b.Dialect, updates)
 	b.Parts = SQLParts{
 		Operation: "UPDATE",
 		Update:    updateData,
@@ -133,7 +133,7 @@ func (b *Builder) Update(updates Map) *Builder {
 
 func (b *Builder) OnConflict(fields ...string) *Builder {
 	if b.Parts.Operation == "UPDATE" {
-		b.Parts.Update.Upsert = convertConflict(b.Ctx, fields...)
+		b.Parts.Update.Upsert = convertConflict(b.Dialect, fields...)
 		b.Parts.Update.UpsertExp = "DO NOTHING"
 	} else {
 		panic("OnConflict is only available for UPDATE operation")

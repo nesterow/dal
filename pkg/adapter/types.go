@@ -6,10 +6,10 @@ type Query struct {
 	Data       []interface{} `json:"data"`
 }
 
-type CtxOpts map[string]string
+type DialectOpts map[string]string
 
-type Context interface {
-	New(opts CtxOpts) Context
+type Dialect interface {
+	New(opts DialectOpts) Dialect
 	GetTableName() string
 	GetFieldName() string
 	GetColumnName(key string) string

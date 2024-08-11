@@ -10,7 +10,7 @@ func (f Glob) FromJSON(data interface{}) IFilter {
 	return FromJson[Glob](data)
 }
 
-func (f Glob) ToSQLPart(ctx Context) string {
+func (f Glob) ToSQLPart(ctx Dialect) string {
 	if f.Glob == nil {
 		return ""
 	}

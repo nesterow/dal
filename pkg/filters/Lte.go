@@ -12,7 +12,7 @@ func (f Lte) FromJSON(data interface{}) IFilter {
 	return FromJson[Lte](data)
 }
 
-func (f Lte) ToSQLPart(ctx Context) string {
+func (f Lte) ToSQLPart(ctx Dialect) string {
 	if f.Lte == nil {
 		return ""
 	}

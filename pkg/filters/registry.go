@@ -22,7 +22,7 @@ var FilterRegistry = map[string]IFilter{
 	"NotLike":    &NotLike{},
 }
 
-func Convert(ctx Context, data interface{}) (string, error) {
+func Convert(ctx Dialect, data interface{}) (string, error) {
 	for _, impl := range FilterRegistry {
 		filter := impl.FromJSON(data)
 		if reflect.DeepEqual(impl, filter) {

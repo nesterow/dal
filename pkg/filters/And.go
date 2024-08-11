@@ -9,7 +9,7 @@ type And struct {
 	And []string `json:"$and"`
 }
 
-func (f And) ToSQLPart(ctx Context) string {
+func (f And) ToSQLPart(ctx Dialect) string {
 	if f.And == nil {
 		return ""
 	}

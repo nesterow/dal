@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -15,12 +16,12 @@ func TestConvertInsert(t *testing.T) {
 	}
 	result, _ := convertInsert(ctx, insert)
 
-	if result.Statement != `INSERT INTO test (a,b,c) VALUES (?,?,?)` {
-		t.Errorf(`Expected "INSERT INTO test (a,b,c) VALUES (?,?,?)", got %s`, result.Statement)
+	if result.Statement != `INSERT INTO test (a,b,c) VALUES (?,?,?),(?,?,?)` {
+		t.Errorf(`Expected "INSERT INTO test (a,b,c) VALUES (?,?,?),(?,?,?)", got %s`, result.Statement)
 	}
 
-	// for _, r := range result.Values {
-	// 	fmt.Println(r)
-	// }
+	for _, r := range result.Values {
+		fmt.Println(r)
+	}
 
 }

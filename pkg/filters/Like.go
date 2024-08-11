@@ -10,7 +10,7 @@ func (f Like) FromJSON(data interface{}) IFilter {
 	return FromJson[Like](data)
 }
 
-func (f Like) ToSQLPart(ctx Context) string {
+func (f Like) ToSQLPart(ctx Dialect) string {
 	if f.Like == nil {
 		return ""
 	}

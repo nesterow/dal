@@ -2,11 +2,11 @@ package filters
 
 import "l12.xyz/dal/adapter"
 
-type CtxOpts = adapter.CtxOpts
-type Context = adapter.Context
+type DialectOpts = adapter.DialectOpts
+type Dialect = adapter.Dialect
 
 type IFilter interface {
-	ToSQLPart(ctx Context) string
+	ToSQLPart(ctx Dialect) string
 	FromJSON(interface{}) IFilter
 }
 

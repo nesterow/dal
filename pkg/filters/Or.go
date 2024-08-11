@@ -9,7 +9,7 @@ type Or struct {
 	Or []string `json:"$or"`
 }
 
-func (f Or) ToSQLPart(ctx Context) string {
+func (f Or) ToSQLPart(ctx Dialect) string {
 	if f.Or == nil {
 		return ""
 	}

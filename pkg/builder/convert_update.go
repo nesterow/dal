@@ -12,7 +12,7 @@ type UpdateData struct {
 	Values    []interface{}
 }
 
-func convertUpdate(ctx Context, updates Map) UpdateData {
+func convertUpdate(ctx Dialect, updates Map) UpdateData {
 	keys := aggregateSortedKeys([]Map{updates})
 	set := make([]string, 0)
 	values := make([]interface{}, 0)
