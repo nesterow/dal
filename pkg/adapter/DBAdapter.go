@@ -31,9 +31,11 @@ func (a *DBAdapter) Open(url string) (*sql.DB, error) {
 	if a.MaxAttempts == 0 {
 		a.MaxAttempts = 6
 	}
+
 	if a.ConnectionLiveTime == 0 {
 		a.ConnectionLiveTime = 120
 	}
+
 	if a.dbs == nil {
 		a.dbs = &DBMap{
 			Connections:        make(map[string]*sql.DB),
@@ -65,8 +67,9 @@ func (a *DBAdapter) Open(url string) (*sql.DB, error) {
 			return a.Open(url)
 		}
 	}
-	a.dbs.ConnectionAttempts[url] = 0
-	return a.dbs.Connections[url], nil
+
+	attempts[url] = 0
+	return connections[url], nil
 }
 
 func (a *DBAdapter) GetDB(url string) *sql.DB {
@@ -77,8 +80,11 @@ func (a *DBAdapter) GetDB(url string) *sql.DB {
 }
 
 func (a *DBAdapter) Close() {
-	for _, db := range a.dbs.Connections {
+	for url, db := range a.dbs.Connections {
 		db.Close()
+		delete(a.dbs.Connections, url)
+		delete(a.dbs.ConnectionAttempts, url)
+		delete(a.dbs.ConnectionTime, url)
 	}
 	a.dbs = nil
 }
