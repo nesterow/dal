@@ -31,11 +31,12 @@ func TestBuilderBasic(t *testing.T) {
 		t.Fatalf("failed to insert data: %v", err)
 	}
 
-	expr, _ := builder.New(adapter.SQLite{}).In("test t").Find(builder.Find{"name": builder.Is{"$in": []interface{}{"a", 'b'}}}).Sql()
+	expr, values := builder.New(adapter.SQLite{}).In("test t").Find(builder.Find{"name": builder.Is{"$in": []interface{}{"a", 98}}}).Sql()
 	fmt.Println(expr)
 	rows, err := a.Query(adapter.Query{
 		Db:         "file::memory:?cache=shared",
 		Expression: expr,
+		Data:       values,
 	})
 	if err != nil {
 		t.Fatalf("failed to query data: %v", err)

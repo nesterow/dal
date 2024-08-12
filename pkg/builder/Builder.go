@@ -24,6 +24,7 @@ type SQLParts struct {
 	OrderExp  string
 	LimitExp  string
 	OffsetExp string
+	Values    []interface{}
 	Insert    InsertData
 	Update    UpdateData
 }
@@ -49,7 +50,7 @@ func (b *Builder) In(table string) *Builder {
 }
 
 func (b *Builder) Find(query Find) *Builder {
-	b.Parts.FiterExp = covertFind(
+	b.Parts.FiterExp, b.Parts.Values = covertFind(
 		b.Dialect,
 		query,
 	)
@@ -79,7 +80,9 @@ func (b *Builder) Fields(fields ...Map) *Builder {
 }
 
 func (b *Builder) Join(joins ...interface{}) *Builder {
-	b.Parts.JoinExps = convertJoin(b.Dialect, joins...)
+	exps, vals := convertJoin(b.Dialect, joins...)
+	b.Parts.JoinExps = append(b.Parts.JoinExps, exps...)
+	b.Parts.Values = append(b.Parts.Values, vals...)
 	return b
 }
 
@@ -178,7 +181,7 @@ func (b *Builder) Sql() (string, []interface{}) {
 			b.Parts.OrderExp,
 			b.Parts.LimitExp,
 			b.Parts.OffsetExp,
-		}, " ")), nil
+		}, " ")), b.Parts.Values
 	case operation == "DELETE":
 		return unspace(strings.Join([]string{
 			b.Parts.Operation,
@@ -189,7 +192,7 @@ func (b *Builder) Sql() (string, []interface{}) {
 			b.Parts.OrderExp,
 			b.Parts.LimitExp,
 			b.Parts.OffsetExp,
-		}, " ")), nil
+		}, " ")), b.Parts.Values
 	case operation == "INSERT INTO":
 		return b.Parts.Insert.Statement, b.Parts.Insert.Values
 	case operation == "UPDATE":

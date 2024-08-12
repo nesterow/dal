@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -8,17 +9,20 @@ func TestConvertFind(t *testing.T) {
 	find := Find{
 		"impl": "1",
 		"exp": Is{
-			"$gt": 1,
+			"$gt": 2,
 		},
 	}
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := covertFind(ctx, find)
-	if result == `t.exp > 1 AND t.impl = '1'` {
-		return
+	result, values := covertFind(ctx, find)
+	if values[1] != "1" {
+		t.Errorf("Expected '1', got %v", values[1])
 	}
-	if result == `t.impl = '1' AND t.exp > 1` {
+	if values[0].(float64) != 2 {
+		t.Errorf("Expected 2, got %v", values[0])
+	}
+	if result == `t.exp > ? AND t.impl = ?` {
 		return
 	}
 	t.Errorf(`Expected "t.impl = '1' AND t.exp = 1", got %s`, result)
@@ -38,14 +42,12 @@ func TestConvertFindAnd(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := covertFind(ctx, find)
-	if result == `(t.a > 1 AND t.b < 10)` {
+	result, values := covertFind(ctx, find)
+	fmt.Println(values)
+	if result == `(t.a > ? AND t.b < ?)` {
 		return
 	}
-	if result == `(t.b < 10 AND t.a > 1)` {
-		return
-	}
-	t.Errorf(`Expected "(t.b < 10 AND t.a > 1)", got %s`, result)
+	t.Errorf(`Expected "(t.b < ? AND t.a > ?)", got %s`, result)
 }
 
 func TestConvertFindOr(t *testing.T) {
@@ -62,12 +64,10 @@ func TestConvertFindOr(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := covertFind(ctx, find)
-	if result == `(t.a > 1 OR t.b < 10)` {
+	result, values := covertFind(ctx, find)
+	fmt.Println(values)
+	if result == `(t.a > ? OR t.b < ?)` {
 		return
 	}
-	if result == `(t.b < 10 OR t.a > 1)` {
-		return
-	}
-	t.Errorf(`Expected "(t.b < 10 OR t.a > 1)", got %s`, result)
+	t.Errorf(`Expected "(t.b < ? OR t.a > ?)", got %s`, result)
 }

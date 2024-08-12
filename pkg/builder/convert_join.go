@@ -11,27 +11,30 @@ type Join struct {
 	As  string `json:"$as"`
 }
 
-func (j Join) Convert(ctx Dialect) string {
+func (j Join) Convert(ctx Dialect) (string, Values) {
 	if j.For == "" {
-		return ""
+		return "", nil
 	}
-	filter := covertFind(ctx, j.Do)
+	filter, values := covertFind(ctx, j.Do)
 	var as string = ""
 	if j.As != "" {
 		as = fmt.Sprintf("%s ", j.As)
 	}
-	return as + fmt.Sprintf("JOIN %s ON %s", j.For, filter)
+	return as + fmt.Sprintf("JOIN %s ON %s", j.For, filter), values
 }
 
-func convertJoin(ctx Dialect, joins ...interface{}) []string {
+func convertJoin(ctx Dialect, joins ...interface{}) ([]string, Values) {
 	var result []string
+	var values Values
 	for _, join := range joins {
 		jstr, ok := join.(string)
 		if ok {
 			jjson := Join{}
 			err := json.Unmarshal([]byte(jstr), &jjson)
 			if err == nil {
-				result = append(result, jjson.Convert(ctx))
+				r, vals := jjson.Convert(ctx)
+				result = append(result, r)
+				values = append(values, vals...)
 			}
 			continue
 		}
@@ -44,7 +47,9 @@ func convertJoin(ctx Dialect, joins ...interface{}) []string {
 			}
 			err = json.Unmarshal(jstr, &jjson)
 			if err == nil {
-				result = append(result, jjson.Convert(ctx))
+				r, vals := jjson.Convert(ctx)
+				result = append(result, r)
+				values = append(values, vals...)
 			}
 			continue
 		}
@@ -52,7 +57,9 @@ func convertJoin(ctx Dialect, joins ...interface{}) []string {
 		if !ok {
 			continue
 		}
-		result = append(result, j.Convert(ctx))
+		r, vals := j.Convert(ctx)
+		result = append(result, r)
+		values = append(values, vals...)
 	}
-	return result
+	return result, values
 }

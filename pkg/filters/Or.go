@@ -9,12 +9,12 @@ type Or struct {
 	Or []string `json:"$or"`
 }
 
-func (f Or) ToSQLPart(ctx Dialect) string {
+func (f Or) ToSQLPart(ctx Dialect) (string, Values) {
 	if f.Or == nil {
-		return ""
+		return "", nil
 	}
 	value := strings.Join(f.Or, " OR ")
-	return fmt.Sprintf("(%s)", value)
+	return fmt.Sprintf("(%s)", value), nil
 }
 
 func (a Or) FromJSON(data interface{}) IFilter {

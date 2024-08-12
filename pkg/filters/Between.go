@@ -14,12 +14,13 @@ func (f Between) FromJSON(data interface{}) IFilter {
 	return FromJson[Between](data)
 }
 
-func (f Between) ToSQLPart(ctx Dialect) string {
+func (f Between) ToSQLPart(ctx Dialect) (string, Values) {
 	if f.Between == nil {
-		return ""
+		return "", nil
 	}
 	name := ctx.GetFieldName()
 	values := utils.Map(f.Between, ctx.NormalizeValue)
-	condition := fmt.Sprintf("%v AND %v", values[0], values[1])
-	return fmt.Sprintf("%s BETWEEN %v", name, condition)
+	placeholders := utils.Map(values, ValueOrPlaceholder)
+	condition := fmt.Sprintf("%s AND %s", placeholders[0], placeholders[1])
+	return fmt.Sprintf("%s BETWEEN %v", name, condition), values
 }

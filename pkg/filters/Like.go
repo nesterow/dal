@@ -10,11 +10,11 @@ func (f Like) FromJSON(data interface{}) IFilter {
 	return FromJson[Like](data)
 }
 
-func (f Like) ToSQLPart(ctx Dialect) string {
+func (f Like) ToSQLPart(ctx Dialect) (string, Values) {
 	if f.Like == nil {
-		return ""
+		return "", nil
 	}
 	name := ctx.GetFieldName()
 	value := ctx.NormalizeValue(f.Like)
-	return fmt.Sprintf("%s LIKE %v ESCAPE '\\'", name, value)
+	return fmt.Sprintf("%s LIKE ? ESCAPE '\\'", name), Values{value}
 }

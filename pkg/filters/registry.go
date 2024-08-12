@@ -22,17 +22,16 @@ var FilterRegistry = map[string]IFilter{
 	"NotLike":    &NotLike{},
 }
 
-func Convert(ctx Dialect, data interface{}) (string, error) {
+func Convert(ctx Dialect, data interface{}) (string, []interface{}) {
 	for _, impl := range FilterRegistry {
 		filter := impl.FromJSON(data)
 		if reflect.DeepEqual(impl, filter) {
 			continue
 		}
-		value := filter.ToSQLPart(ctx)
-		if value != "" {
-			return value, nil
+		sfmt, values := filter.ToSQLPart(ctx)
+		if sfmt != "" {
+			return sfmt, values
 		}
 	}
-	value := Eq{Eq: data}.ToSQLPart(ctx)
-	return value, nil
+	return Eq{Eq: data}.ToSQLPart(ctx)
 }

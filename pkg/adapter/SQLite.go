@@ -58,7 +58,13 @@ func (c SQLite) GetColumnName(key string) string {
 }
 
 func (c SQLite) NormalizeValue(value interface{}) interface{} {
-	str, ok := value.(string)
+	str, isStr := value.(string)
+	if !isStr {
+		return value
+	}
+	if str == "?" {
+		return str
+	}
 	if utils.IsSQLFunction(str) {
 		return str
 	}
@@ -68,12 +74,9 @@ func (c SQLite) NormalizeValue(value interface{}) interface{} {
 			return value
 		}
 	}
-	if !ok {
-		return value
-	}
 	val, err := utils.EscapeSQL(str)
 	if err != nil {
 		return str
 	}
-	return "'" + utils.EscapeSingleQuote(string(val)) + "'"
+	return string(val)
 }

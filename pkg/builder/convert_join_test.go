@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"testing"
 
 	adapter "l12.xyz/dal/adapter"
@@ -19,7 +20,8 @@ func TestJoin(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := j.Convert(ctx)
+	result, vals := j.Convert(ctx)
+	fmt.Println("Join:", vals)
 	if result == `LEFT JOIN artist a ON a.impl = t.impl` {
 		return
 	}
@@ -39,7 +41,8 @@ func TestConvertJoin(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := convertJoin(ctx, joins...)
+	result, vals := convertJoin(ctx, joins...)
+	fmt.Println("Join:", vals)
 	if result[1] != `JOIN artist a ON a.impl = t.impl` {
 		t.Errorf(`Expected "JOIN artist a ON a.impl = t.impl", got %s`, result[1])
 	}
@@ -56,7 +59,8 @@ func TestConvertMap(t *testing.T) {
 	ctx := SQLiteContext{
 		TableAlias: "t",
 	}
-	result := convertJoin(ctx, joins...)
+	result, vals := convertJoin(ctx, joins...)
+	fmt.Println("Join:", vals)
 	if result[0] != `LEFT JOIN artist a ON a.impl = t.impl` {
 		t.Errorf(`Expected "LEFT JOIN artist a ON a.impl = t.impl", got %s`, result[0])
 	}

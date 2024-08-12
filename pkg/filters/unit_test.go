@@ -1,6 +1,7 @@
 package filters
 
 import (
+	"fmt"
 	"testing"
 
 	adapter "l12.xyz/dal/adapter"
@@ -29,10 +30,13 @@ func TestGte(t *testing.T) {
 		TableAlias: "t",
 		FieldName:  "test",
 	}
-	result, _ := Convert(ctx, `{"$gte": 1}`)
+	result, vals := Convert(ctx, `{"$gte": 1}`)
 	resultMap, _ := Convert(ctx, Filter{"$gte": 1})
-	if result != `t.test >= 1` {
-		t.Errorf("Expected t.test >= 1, got %s", result)
+	if vals[0].(float64) != 1 {
+		t.Errorf("Expected 1, got %v", vals[0])
+	}
+	if result != `t.test >= ?` {
+		t.Errorf("Expected t.test >= ?, got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)
@@ -46,8 +50,8 @@ func TestNe(t *testing.T) {
 	}
 	result, _ := Convert(ctx, `{"$ne": "1"}`)
 	resultMap, _ := Convert(ctx, Filter{"$ne": "1"})
-	if result != `test != '1'` {
-		t.Errorf("Expected test != '1', got %s", result)
+	if result != `test != ?` {
+		t.Errorf("Expected test != ?, got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)
@@ -59,10 +63,11 @@ func TestBetween(t *testing.T) {
 	ctx := SQLiteContext{
 		FieldName: "test",
 	}
-	result, _ := Convert(ctx, `{"$between": ["1", "5"]}`)
+	result, vals := Convert(ctx, `{"$between": ["1", "5"]}`)
+	fmt.Println(vals)
 	resultMap, _ := Convert(ctx, Filter{"$between": []string{"1", "5"}})
-	if result != `test BETWEEN '1' AND '5'` {
-		t.Errorf("Expected test BETWEEN '1' AND '5', got %s", result)
+	if result != `test BETWEEN ? AND ?` {
+		t.Errorf("Expected test BETWEEN ? AND ?, got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)
@@ -76,8 +81,8 @@ func TestNotBetween(t *testing.T) {
 	}
 	result, _ := Convert(ctx, `{"$nbetween": ["1", "5"]}`)
 	resultMap, _ := Convert(ctx, Filter{"$nbetween": []string{"1", "5"}})
-	if result != `test NOT BETWEEN '1' AND '5'` {
-		t.Errorf("Expected test BETWEEN '1' AND '5', got %s", result)
+	if result != `test NOT BETWEEN ? AND ?` {
+		t.Errorf("Expected test NOT BETWEEN ? AND ?, got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)
@@ -90,9 +95,12 @@ func TestGlob(t *testing.T) {
 		TableAlias: "t",
 		FieldName:  "test",
 	}
-	result, _ := Convert(ctx, `{"$glob": "*son"}`)
+	result, vals := Convert(ctx, `{"$glob": "*son"}`)
 	resultMap, _ := Convert(ctx, Filter{"$glob": "*son"})
-	if result != `t.test GLOB '*son'` {
+	if vals[0].(string) != "*son" {
+		t.Errorf("Expected *son, got %v", vals[0])
+	}
+	if result != `t.test GLOB ?` {
 		t.Errorf("Expected t.test GLOB '*son', got %s", result)
 	}
 	if resultMap != result {
@@ -108,8 +116,8 @@ func TestIn(t *testing.T) {
 	}
 	result, _ := Convert(ctx, `{"$in": [1, 2, 3]}`)
 	resultMap, _ := Convert(ctx, Filter{"$in": []int{1, 2, 3}})
-	if result != `t.test IN (1, 2, 3)` {
-		t.Errorf("Expected t.test IN (1, 2, 3), got %s", result)
+	if result != `t.test IN (?, ?, ?)` {
+		t.Errorf("Expected t.test IN (?, ?, ?), got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)
@@ -122,10 +130,13 @@ func TestNotIn(t *testing.T) {
 		TableAlias: "t",
 		FieldName:  "test",
 	}
-	result, _ := Convert(ctx, `{"$nin": [1, 2, 3]}`)
+	result, vals := Convert(ctx, `{"$nin": [1, 2, 3]}`)
 	resultMap, _ := Convert(ctx, Filter{"$nin": []int{1, 2, 3}})
-	if result != `t.test NOT IN (1, 2, 3)` {
-		t.Errorf("Expected t.test NOT IN (1, 2, 3), got %s", result)
+	if vals[1].(float64) != 2 {
+		t.Errorf("Expected 1, got %v", vals[1])
+	}
+	if result != `t.test NOT IN (?, ?, ?)` {
+		t.Errorf("Expected t.test NOT IN (?, ?, ?), got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)
@@ -138,10 +149,13 @@ func TestLike(t *testing.T) {
 		TableAlias: "t",
 		FieldName:  "test",
 	}
-	result, _ := Convert(ctx, `{"$like": "199_"}`)
+	result, vals := Convert(ctx, `{"$like": "199_"}`)
 	resultMap, _ := Convert(ctx, Filter{"$like": "199_"})
-	if result != `t.test LIKE '199_' ESCAPE '\'` {
-		t.Errorf("Expected t.test LIKE '199_' ESCAPE '\\', got %s", result)
+	if vals[0].(string) != "199_" {
+		t.Errorf("Expected 199_, got %v", vals[0])
+	}
+	if result != `t.test LIKE ? ESCAPE '\'` {
+		t.Errorf("Expected t.test LIKE ? ESCAPE '\\', got %s", result)
 	}
 	if resultMap != result {
 		t.Log(resultMap)

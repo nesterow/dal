@@ -1,9 +1,5 @@
 package filters
 
-import (
-	"fmt"
-)
-
 type Lte struct {
 	Lte interface{} `json:"$lte"`
 }
@@ -12,11 +8,11 @@ func (f Lte) FromJSON(data interface{}) IFilter {
 	return FromJson[Lte](data)
 }
 
-func (f Lte) ToSQLPart(ctx Dialect) string {
+func (f Lte) ToSQLPart(ctx Dialect) (string, Values) {
 	if f.Lte == nil {
-		return ""
+		return "", nil
 	}
 	name := ctx.GetFieldName()
 	value := ctx.NormalizeValue(f.Lte)
-	return fmt.Sprintf("%s <= %v", name, value)
+	return FmtCompare("<=", name, value)
 }

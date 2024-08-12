@@ -14,12 +14,13 @@ func (f NotBetween) FromJSON(data interface{}) IFilter {
 	return FromJson[NotBetween](data)
 }
 
-func (f NotBetween) ToSQLPart(ctx Dialect) string {
+func (f NotBetween) ToSQLPart(ctx Dialect) (string, Values) {
 	if f.NotBetween == nil {
-		return ""
+		return "", nil
 	}
 	name := ctx.GetFieldName()
 	values := utils.Map(f.NotBetween, ctx.NormalizeValue)
-	condition := fmt.Sprintf("%v AND %v", values[0], values[1])
-	return fmt.Sprintf("%s NOT BETWEEN %v", name, condition)
+	placeholders := utils.Map(values, ValueOrPlaceholder)
+	condition := fmt.Sprintf("%s AND %s", placeholders[0], placeholders[1])
+	return fmt.Sprintf("%s NOT BETWEEN %v", name, condition), values
 }
