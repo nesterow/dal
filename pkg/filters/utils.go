@@ -16,6 +16,9 @@ func FromJson[T IFilter](data interface{}) *T {
 		}
 	}
 	m, ok := data.(Filter)
+	if !ok {
+		m, ok = data.(map[string]interface{})
+	}
 	if ok {
 		s, err := json.Marshal(m)
 		if err != nil {
