@@ -195,6 +195,12 @@ func (z *Request) DecodeMsg(dc *msgp.Reader) (err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "id":
+			z.Id, err = dc.ReadUint32()
+			if err != nil {
+				err = msgp.WrapError(err, "Id")
+				return
+			}
 		case "db":
 			z.Db, err = dc.ReadString()
 			if err != nil {
@@ -275,9 +281,19 @@ func (z *Request) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *Request) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 2
+	// map header, size 3
+	// write "id"
+	err = en.Append(0x83, 0xa2, 0x69, 0x64)
+	if err != nil {
+		return
+	}
+	err = en.WriteUint32(z.Id)
+	if err != nil {
+		err = msgp.WrapError(err, "Id")
+		return
+	}
 	// write "db"
-	err = en.Append(0x82, 0xa2, 0x64, 0x62)
+	err = en.Append(0xa2, 0x64, 0x62)
 	if err != nil {
 		return
 	}
@@ -332,9 +348,12 @@ func (z *Request) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *Request) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 2
+	// map header, size 3
+	// string "id"
+	o = append(o, 0x83, 0xa2, 0x69, 0x64)
+	o = msgp.AppendUint32(o, z.Id)
 	// string "db"
-	o = append(o, 0x82, 0xa2, 0x64, 0x62)
+	o = append(o, 0xa2, 0x64, 0x62)
 	o = msgp.AppendString(o, z.Db)
 	// string "commands"
 	o = append(o, 0xa8, 0x63, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x73)
@@ -376,6 +395,12 @@ func (z *Request) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			return
 		}
 		switch msgp.UnsafeString(field) {
+		case "id":
+			z.Id, bts, err = msgp.ReadUint32Bytes(bts)
+			if err != nil {
+				err = msgp.WrapError(err, "Id")
+				return
+			}
 		case "db":
 			z.Db, bts, err = msgp.ReadStringBytes(bts)
 			if err != nil {
@@ -457,7 +482,7 @@ func (z *Request) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *Request) Msgsize() (s int) {
-	s = 1 + 3 + msgp.StringPrefixSize + len(z.Db) + 9 + msgp.ArrayHeaderSize
+	s = 1 + 3 + msgp.Uint32Size + 3 + msgp.StringPrefixSize + len(z.Db) + 9 + msgp.ArrayHeaderSize
 	for za0001 := range z.Commands {
 		s += 1 + 7 + msgp.StringPrefixSize + len(z.Commands[za0001].Method) + 5 + msgp.ArrayHeaderSize
 		for za0002 := range z.Commands[za0001].Args {

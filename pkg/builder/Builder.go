@@ -5,6 +5,12 @@ import (
 	"strings"
 )
 
+const (
+	BUILDER_VERSION        = "0.0.1"
+	BUILDER_CLIENT_METHODS = "In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing"
+	BUILDER_SERVER_METHODS = "Sql"
+)
+
 type Builder struct {
 	TableName  string
 	TableAlias string

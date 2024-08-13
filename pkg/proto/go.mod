@@ -18,7 +18,7 @@ replace l12.xyz/dal/filters v0.0.0 => ../filters
 
 require (
 	github.com/pkg/errors v0.9.1 // indirect
-	l12.xyz/dal/adapter v0.0.0 // indirect
+	l12.xyz/dal/adapter v0.0.0
 	l12.xyz/dal/filters v0.0.0 // indirect
 	l12.xyz/dal/utils v0.0.0 // indirect
 )
