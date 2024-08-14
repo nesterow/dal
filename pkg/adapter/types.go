@@ -15,3 +15,8 @@ type Dialect interface {
 	GetColumnName(key string) string
 	NormalizeValue(interface{}) interface{}
 }
+
+var DIALECTS = map[string]Dialect{
+	"sqlite3": SQLite{},
+	"sqlite":  SQLite{},
+}

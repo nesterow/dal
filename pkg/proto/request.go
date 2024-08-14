@@ -26,11 +26,17 @@ type Request struct {
 var allowedMethods = strings.Split(builder.BUILDER_CLIENT_METHODS, "|")
 
 func (q *Request) Parse(dialect adapter.Dialect) (adapter.Query, error) {
+	if q.Db == "" {
+		return adapter.Query{}, fmt.Errorf("Request format: db url is required")
+	}
+	if len(q.Commands) == 0 {
+		return adapter.Query{}, fmt.Errorf("Request format: commands are required")
+	}
 	b := builder.New(dialect)
 	for _, cmd := range q.Commands {
 		if !slices.Contains(allowedMethods, cmd.Method) {
 			return adapter.Query{}, fmt.Errorf(
-				"method %s is not allowed, awailable methods are %v",
+				"method %s is not allowed, available methods are %v",
 				cmd.Method,
 				allowedMethods,
 			)
