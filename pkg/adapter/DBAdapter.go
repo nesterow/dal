@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-/**
- * DBAdapter
- * Automatically creates connections for each database URL.
- * Executes queries on the specified database.
- * Closes connections older than ConnectionLiveTime
-**/
+/*
+DBAdapter
+Automatically creates connections for each database URL.
+Executes queries on the specified database.
+Closes connections older than ConnectionLiveTime
+*/
 type DBAdapter struct {
 	Type               string
 	MaxAttempts        int

@@ -8,9 +8,9 @@ type Query struct {
 
 type DialectOpts map[string]string
 
-/**
-* Dialect interface provides general utilities for normalizing values for particular DB.
-**/
+/*
+Dialect interface provides general utilities for normalizing values for particular DB.
+*/
 type Dialect interface {
 	New(opts DialectOpts) Dialect
 	GetTableName() string

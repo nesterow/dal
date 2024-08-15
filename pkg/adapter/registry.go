@@ -6,11 +6,11 @@ var DIALECTS = map[string]Dialect{
 	"sqlite3": CommonDialect{},
 }
 
-/**
- * Register a new dialect for a given driver name.
- * `driverName` is the valid name of the db driver (e.g. "sqlite3", "postgres").
- * `dialect` is an implementation of the Dialect interface.
-**/
+/*
+Register a new dialect for a given driver name.
+`driverName` is the valid name of the db driver (e.g. "sqlite3", "postgres").
+`dialect` is an implementation of the Dialect interface.
+*/
 func RegisterDialect(driverName string, dialect Dialect) {
 	DIALECTS[driverName] = dialect
 }

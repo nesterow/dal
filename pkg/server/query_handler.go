@@ -9,15 +9,15 @@ import (
 	"l12.xyz/dal/proto"
 )
 
-/**
-* QueryHandler is a http.Handler that reads a proto.Request from the request body,
-* parses it into a query, executes the query on the provided db and writes the
-* result to the response body.
-* - The request body is expected to be in msgpack format (proto.Request).
-* - The response body is written in msgpack format.
-* - The respose is a stream of rows (proto.Row), where the first row is the column names.
-* - The columns are sorted alphabetically, so it is client's responsibility to match them and sort as needed.
-**/
+/*
+QueryHandler is a http.Handler that reads a proto.Request from the request body,
+parses it into a query, executes the query on the provided db and writes the
+result to the response body.
+- The request body is expected to be in msgpack format (proto.Request).
+- The response body is written in msgpack format.
+- The respose is a stream of rows (proto.Row), where the first row is the column names.
+- The columns are sorted alphabetically, so it is client's responsibility to match them and sort as needed.
+*/
 func QueryHandler(db adapter.DBAdapter) http.Handler {
 	dialect := adapter.GetDialect(db.Type)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

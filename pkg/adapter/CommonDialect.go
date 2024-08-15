@@ -7,10 +7,10 @@ import (
 	utils "l12.xyz/dal/utils"
 )
 
-/**
-* CommonDialect is a simple implementation of the Dialect interface.
-* Should be usable for most SQL databases.
-**/
+/*
+CommonDialect is a simple implementation of the Dialect interface.
+Should be usable for most SQL databases.
+*/
 type CommonDialect struct {
 	TableName  string
 	TableAlias string
