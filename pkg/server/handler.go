@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"reflect"
 
 	"l12.xyz/dal/adapter"
 	"l12.xyz/dal/proto"
@@ -37,19 +38,29 @@ func QueryHandler(db adapter.DBAdapter) http.Handler {
 			return
 		}
 
-		fmt.Println(query, "QueryHandler")
 		rows, err := db.Query(query)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		defer rows.Close()
 
 		w.Header().Set("Content-Type", "application/x-msgpack")
-		defer rows.Close()
+
+		columns, _ := rows.Columns()
+		types, _ := rows.ColumnTypes()
+		cols, _ := proto.MarshalRow(columns)
+		w.Write(cols)
+
 		for rows.Next() {
-			row := []byte{}
-			rows.Scan(row)
-			w.Write(row)
+			data := make([]interface{}, len(columns))
+			for i := range data {
+				typ := reflect.New(types[i].ScanType()).Interface()
+				data[i] = &typ
+			}
+			rows.Scan(data...)
+			cols, _ := proto.MarshalRow(data)
+			w.Write(cols)
 		}
 	})
 }

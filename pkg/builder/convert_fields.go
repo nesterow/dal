@@ -20,6 +20,11 @@ func convertFields(fields []Map) (string, error) {
 				continue
 			}
 			asNum, ok := as.(int)
+			if !ok {
+				n, k := as.(int64)
+				asNum = int(n)
+				ok = k
+			}
 			if ok {
 				if asNum == 1 {
 					expressions = append(expressions, field)
