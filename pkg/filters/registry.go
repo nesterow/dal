@@ -22,6 +22,12 @@ var FilterRegistry = map[string]IFilter{
 	"NotLike":    &NotLike{},
 }
 
+// RegisterFilter registers a new filter for a given name.
+// `name` is the name of the filter, and `filter` is an empty instance (&reference) of the IFilter.
+func RegisterFilter(name string, filter IFilter) {
+	FilterRegistry[name] = filter
+}
+
 func Convert(ctx Dialect, data interface{}) (string, []interface{}) {
 	for _, impl := range FilterRegistry {
 		filter := impl.FromJSON(data)
