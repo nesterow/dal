@@ -33,7 +33,7 @@ func TestQueryHandler(t *testing.T) {
 	data := proto.Request{
 		Id: 0,
 		Db: "file::memory:?cache=shared",
-		Commands: []proto.BuildCmd{
+		Commands: []proto.BuilderMethod{
 			{Method: "In", Args: []interface{}{"test t"}},
 			{Method: "Find", Args: []interface{}{
 				map[string]interface{}{"id": 1},

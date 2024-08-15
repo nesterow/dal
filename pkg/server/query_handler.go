@@ -22,13 +22,7 @@ func QueryHandler(db adapter.DBAdapter) http.Handler {
 	dialect := adapter.GetDialect(db.Type)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		bodyReader, err := r.GetBody()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		body, err := io.ReadAll(bodyReader)
+		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -50,12 +44,18 @@ func QueryHandler(db adapter.DBAdapter) http.Handler {
 		}
 		defer rows.Close()
 
+		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Content-Type", "application/x-msgpack")
-
+		flusher, ok := w.(http.Flusher)
+		if !ok {
+			http.Error(w, "expected http.ResponseWriter to be an http.Flusher", http.StatusInternalServerError)
+			return
+		}
 		columns, _ := rows.Columns()
 		types, _ := rows.ColumnTypes()
 		cols, _ := proto.MarshalRow(columns)
 		w.Write(cols)
+		flusher.Flush()
 
 		for rows.Next() {
 			data := make([]interface{}, len(columns))
@@ -66,6 +66,7 @@ func QueryHandler(db adapter.DBAdapter) http.Handler {
 			rows.Scan(data...)
 			cols, _ := proto.MarshalRow(data)
 			w.Write(cols)
+			flusher.Flush()
 		}
 	})
 }

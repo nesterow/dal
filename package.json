@@ -10,5 +10,10 @@
   },
   "dependencies": {
     "@msgpack/msgpack": "^3.0.0-beta2"
+  },
+  "scripts": {
+    "test:client": "bun test:*",
+    "test:dal" : "bun test dal/__test__",
+    "test:serve": "cd dal/__test__/srv && go run main.go"
   }
 }

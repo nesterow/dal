@@ -1,5 +1,5 @@
 import type { Request } from "./Protocol";
-import { METHODS } from "./Protocol";
+import { METHODS, encodeRequest, decodeRowsIterator } from "./Protocol";
 
 type Primitive = string | number | boolean | null;
 
@@ -29,17 +29,23 @@ type JoinFilter = {
   $as?: JoinCondition;
 };
 
-export type SortOptions = Record<string, 1 | -1 | "asc" | "desc">;
+type SortOptions = Record<string, 1 | -1 | "asc" | "desc">;
 
+type Options = {
+    database: string;
+    url: string;
+};
 
 export default class Builder {
     private request: Request;
-    constructor(database: string) {
+    private url: string;
+    constructor(opts: Options) {
         this.request = {
             id: 0,
-            db: database,
+            db: opts.database,
             commands: [],
         };
+        this.url = opts.url;
     }
     private format(): void {
         this.request.commands = METHODS.map((method) => {
@@ -110,6 +116,28 @@ export default class Builder {
     DoNothing(): Builder {
         this.request.commands.push({ method: "DoNothing", args: [] });
         return this;
+    }
+    async *Rows() {
+        this.format();
+        const response = await fetch(this.url, {
+            method: "POST",
+            body: new Blob([encodeRequest(this.request)]),
+            headers: {
+                "Content-Type": "application/x-msgpack",
+            },
+        });
+        if (response.status !== 200) {
+            throw new Error(await response.text());
+        }
+
+        for await (const row of decodeRowsIterator(response.body!)) {
+            yield row;
+        }
+        this.request = {
+            id: 0,
+            db: this.request.db,
+            commands: [],
+        };
     }
     
 }

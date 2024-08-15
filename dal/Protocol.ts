@@ -1,4 +1,4 @@
-import { encode } from '@msgpack/msgpack';
+import { encode, decode } from '@msgpack/msgpack';
 
 export interface Method {
     method: string;
@@ -15,4 +15,55 @@ export const METHODS = "In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delet
 
 export function encodeRequest(request: Request): Uint8Array {
     return encode(request);
+}
+
+export interface Row {
+    r: unknown[];
+}
+
+const ROW_TAG = [0x81, 0xa1, 0x72];
+
+export function decodeRows(input: Uint8Array): Row[] {
+    const rows = [];
+    let count = 0;
+    let buf = [];
+    while (count < input.length) {
+        if (input.at(count) != 0x81) {
+			buf.push(input.at(count));
+			count++;
+			continue
+		}
+        const [a, b, c] = ROW_TAG;
+        const [aa, bb, cc] = input.slice(count, count + 4);
+        if (aa == a && bb == b && cc == c) {
+            rows.push([...ROW_TAG, ...buf]);
+            buf = [];
+            count += 3;
+        } else {
+            buf.push(input.at(count));
+            count++;
+        }
+    }
+    rows.push([...ROW_TAG, ...buf]);
+    rows.shift();
+    return rows.map((row) => decode(new Uint8Array(row as number[]))) as Row[];
+}
+
+export async function *decodeRowsIterator(stream: ReadableStream<Uint8Array>): AsyncGenerator<Row> {
+    const reader = stream.getReader();
+    let buf = new Uint8Array();
+    for (;;) {
+        const { value, done } = await reader.read();
+        if (done) {
+            console.log("done");
+            break;
+        }
+        buf = new Uint8Array([...buf, ...value]);
+        // the server flushes after each row
+        // so we decode "complete" rows
+        const rows = decodeRows(buf);
+        for (const row of rows) {
+            yield row;
+        }
+    }
 }
