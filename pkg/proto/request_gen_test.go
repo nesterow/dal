@@ -10,7 +10,7 @@ import (
 )
 
 func TestMarshalUnmarshalBuildCmd(t *testing.T) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	bts, err := v.MarshalMsg(nil)
 	if err != nil {
 		t.Fatal(err)
@@ -33,7 +33,7 @@ func TestMarshalUnmarshalBuildCmd(t *testing.T) {
 }
 
 func BenchmarkMarshalMsgBuildCmd(b *testing.B) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -42,7 +42,7 @@ func BenchmarkMarshalMsgBuildCmd(b *testing.B) {
 }
 
 func BenchmarkAppendMsgBuildCmd(b *testing.B) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	bts := make([]byte, 0, v.Msgsize())
 	bts, _ = v.MarshalMsg(bts[0:0])
 	b.SetBytes(int64(len(bts)))
@@ -54,7 +54,7 @@ func BenchmarkAppendMsgBuildCmd(b *testing.B) {
 }
 
 func BenchmarkUnmarshalBuildCmd(b *testing.B) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	bts, _ := v.MarshalMsg(nil)
 	b.ReportAllocs()
 	b.SetBytes(int64(len(bts)))
@@ -68,7 +68,7 @@ func BenchmarkUnmarshalBuildCmd(b *testing.B) {
 }
 
 func TestEncodeDecodeBuildCmd(t *testing.T) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 
@@ -77,7 +77,7 @@ func TestEncodeDecodeBuildCmd(t *testing.T) {
 		t.Log("WARNING: TestEncodeDecodeBuildCmd Msgsize() is inaccurate")
 	}
 
-	vn := BuildCmd{}
+	vn := BuilderMethod{}
 	err := msgp.Decode(&buf, &vn)
 	if err != nil {
 		t.Error(err)
@@ -92,7 +92,7 @@ func TestEncodeDecodeBuildCmd(t *testing.T) {
 }
 
 func BenchmarkEncodeBuildCmd(b *testing.B) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 	b.SetBytes(int64(buf.Len()))
@@ -106,7 +106,7 @@ func BenchmarkEncodeBuildCmd(b *testing.B) {
 }
 
 func BenchmarkDecodeBuildCmd(b *testing.B) {
-	v := BuildCmd{}
+	v := BuilderMethod{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 	b.SetBytes(int64(buf.Len()))

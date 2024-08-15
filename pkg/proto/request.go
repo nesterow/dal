@@ -12,15 +12,15 @@ import (
 
 //go:generate msgp
 
-type BuildCmd struct {
+type BuilderMethod struct {
 	Method string        `msg:"method"`
 	Args   []interface{} `msg:"args"`
 }
 
 type Request struct {
-	Id       uint32     `msg:"id"`
-	Db       string     `msg:"db"`
-	Commands []BuildCmd `msg:"commands"`
+	Id       uint32          `msg:"id"`
+	Db       string          `msg:"db"`
+	Commands []BuilderMethod `msg:"commands"`
 }
 
 var allowedMethods = strings.Split(builder.BUILDER_CLIENT_METHODS, "|")

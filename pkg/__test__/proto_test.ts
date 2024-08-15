@@ -1,3 +1,4 @@
+//@ts-ignore
 import { encode } from "https://deno.land/x/msgpack@v1.2/mod.ts";
 
 const Query = {
@@ -17,4 +18,5 @@ const Query = {
 };
 
 const encoded: Uint8Array = encode(Query);
+//@ts-ignore
 Deno.writeFileSync("proto_test.msgpack", encoded);

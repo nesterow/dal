@@ -7,7 +7,7 @@ import (
 )
 
 // DecodeMsg implements msgp.Decodable
-func (z *BuildCmd) DecodeMsg(dc *msgp.Reader) (err error) {
+func (z *BuilderMethod) DecodeMsg(dc *msgp.Reader) (err error) {
 	var field []byte
 	_ = field
 	var zb0001 uint32
@@ -61,7 +61,7 @@ func (z *BuildCmd) DecodeMsg(dc *msgp.Reader) (err error) {
 }
 
 // EncodeMsg implements msgp.Encodable
-func (z *BuildCmd) EncodeMsg(en *msgp.Writer) (err error) {
+func (z *BuilderMethod) EncodeMsg(en *msgp.Writer) (err error) {
 	// map header, size 2
 	// write "method"
 	err = en.Append(0x82, 0xa6, 0x6d, 0x65, 0x74, 0x68, 0x6f, 0x64)
@@ -94,7 +94,7 @@ func (z *BuildCmd) EncodeMsg(en *msgp.Writer) (err error) {
 }
 
 // MarshalMsg implements msgp.Marshaler
-func (z *BuildCmd) MarshalMsg(b []byte) (o []byte, err error) {
+func (z *BuilderMethod) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
 	// map header, size 2
 	// string "method"
@@ -114,7 +114,7 @@ func (z *BuildCmd) MarshalMsg(b []byte) (o []byte, err error) {
 }
 
 // UnmarshalMsg implements msgp.Unmarshaler
-func (z *BuildCmd) UnmarshalMsg(bts []byte) (o []byte, err error) {
+func (z *BuilderMethod) UnmarshalMsg(bts []byte) (o []byte, err error) {
 	var field []byte
 	_ = field
 	var zb0001 uint32
@@ -169,7 +169,7 @@ func (z *BuildCmd) UnmarshalMsg(bts []byte) (o []byte, err error) {
 }
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
-func (z *BuildCmd) Msgsize() (s int) {
+func (z *BuilderMethod) Msgsize() (s int) {
 	s = 1 + 7 + msgp.StringPrefixSize + len(z.Method) + 5 + msgp.ArrayHeaderSize
 	for za0001 := range z.Args {
 		s += msgp.GuessSize(z.Args[za0001])
@@ -217,7 +217,7 @@ func (z *Request) DecodeMsg(dc *msgp.Reader) (err error) {
 			if cap(z.Commands) >= int(zb0002) {
 				z.Commands = (z.Commands)[:zb0002]
 			} else {
-				z.Commands = make([]BuildCmd, zb0002)
+				z.Commands = make([]BuilderMethod, zb0002)
 			}
 			for za0001 := range z.Commands {
 				var zb0003 uint32
@@ -417,7 +417,7 @@ func (z *Request) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			if cap(z.Commands) >= int(zb0002) {
 				z.Commands = (z.Commands)[:zb0002]
 			} else {
-				z.Commands = make([]BuildCmd, zb0002)
+				z.Commands = make([]BuilderMethod, zb0002)
 			}
 			for za0001 := range z.Commands {
 				var zb0003 uint32
