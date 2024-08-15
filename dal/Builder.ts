@@ -113,8 +113,8 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     this.methodCalls.set("Delete", []);
     return this;
   }
-  Insert(data: Record<string, unknown>): Builder<I> {
-    this.methodCalls.set("Insert", [data]);
+  Insert(...data: Record<string, unknown>[]): Builder<I> {
+    this.methodCalls.set("Insert", data);
     return this;
   }
   Set(data: Record<string, unknown>): Builder<I> {
@@ -137,6 +137,10 @@ export default class Builder<I extends abstract new (...args: any) => any> {
   DoNothing(): Builder<I> {
     this.methodCalls.delete("DoUpdate");
     this.methodCalls.set("DoNothing", []);
+    return this;
+  }
+  Tx(): Builder<I> {
+    this.methodCalls.set("Tx", []);
     return this;
   }
   async *Rows<T = InstanceType<I>>(): AsyncGenerator<T> {
