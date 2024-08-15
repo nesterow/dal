@@ -5,7 +5,7 @@ import (
 )
 
 func TestConvertConflict(t *testing.T) {
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableName:  "test",
 		TableAlias: "t",
 		FieldName:  "test",

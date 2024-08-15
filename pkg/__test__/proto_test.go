@@ -16,7 +16,7 @@ func TestProtoMessagePack(t *testing.T) {
 	}
 	req := proto.Request{}
 	req.UnmarshalMsg(message)
-	query, err := req.Parse(adapter.SQLite{})
+	query, err := req.Parse(adapter.CommonDialect{})
 	if err != nil {
 		t.Fatalf("failed to parse query: %v", err)
 	}

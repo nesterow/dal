@@ -21,7 +21,7 @@ func TestBuilderBasic(t *testing.T) {
 		t.Fatalf("failed to create table: %v", err)
 	}
 
-	insert, values := builder.New(adapter.SQLite{}).In("test t").Insert([]builder.Map{
+	insert, values := builder.New(adapter.CommonDialect{}).In("test t").Insert([]builder.Map{
 		{"name": "a"},
 		{"name": 'b'},
 	}).Sql()
@@ -31,7 +31,7 @@ func TestBuilderBasic(t *testing.T) {
 		t.Fatalf("failed to insert data: %v", err)
 	}
 
-	expr, values := builder.New(adapter.SQLite{}).In("test t").Find(builder.Find{"name": builder.Is{"$in": []interface{}{"a", 98}}}).Sql()
+	expr, values := builder.New(adapter.CommonDialect{}).In("test t").Find(builder.Find{"name": builder.Is{"$in": []interface{}{"a", 98}}}).Sql()
 	fmt.Println(expr)
 	rows, err := a.Query(adapter.Query{
 		Db:         "file::memory:?cache=shared",

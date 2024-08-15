@@ -6,7 +6,7 @@ import (
 )
 
 func TestConvertInsert(t *testing.T) {
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableName:  "test",
 		TableAlias: "t",
 	}

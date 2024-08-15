@@ -5,7 +5,7 @@ import (
 )
 
 func TestConvertSort(t *testing.T) {
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 		FieldName:  "test",
 	}

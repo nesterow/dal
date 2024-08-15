@@ -6,7 +6,7 @@ import (
 )
 
 func TestBuilderFind(t *testing.T) {
-	db := New(SQLiteContext{})
+	db := New(CommonDialect{})
 	db.In("table t").Find(Query{
 		"field": "value",
 		"a":     1,
@@ -19,7 +19,7 @@ func TestBuilderFind(t *testing.T) {
 }
 
 func TestBuilderFields(t *testing.T) {
-	db := New(SQLiteContext{})
+	db := New(CommonDialect{})
 	db.In("table t")
 	db.Find(Query{
 		"field": "value",
@@ -37,7 +37,7 @@ func TestBuilderFields(t *testing.T) {
 }
 
 func TestBuilderGroup(t *testing.T) {
-	db := New(SQLiteContext{})
+	db := New(CommonDialect{})
 	db.In("table t")
 	db.Find(Query{
 		"field": Is{
@@ -57,7 +57,7 @@ func TestBuilderGroup(t *testing.T) {
 }
 
 func TestBuilderJoin(t *testing.T) {
-	db := New(SQLiteContext{})
+	db := New(CommonDialect{})
 	db.In("table t")
 	db.Find(Query{
 		"field": "value",

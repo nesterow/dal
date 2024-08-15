@@ -7,13 +7,17 @@ import (
 	utils "l12.xyz/dal/utils"
 )
 
-type SQLite struct {
+/**
+* CommonDialect is a simple implementation of the Dialect interface.
+* Should be usable for most SQL databases.
+**/
+type CommonDialect struct {
 	TableName  string
 	TableAlias string
 	FieldName  string
 }
 
-func (c SQLite) New(opts DialectOpts) Dialect {
+func (c CommonDialect) New(opts DialectOpts) Dialect {
 	tn := opts["TableName"]
 	if tn == "" {
 		tn = c.TableName
@@ -26,18 +30,18 @@ func (c SQLite) New(opts DialectOpts) Dialect {
 	if fn == "" {
 		fn = c.FieldName
 	}
-	return SQLite{
+	return CommonDialect{
 		TableName:  tn,
 		TableAlias: ta,
 		FieldName:  fn,
 	}
 }
 
-func (c SQLite) GetTableName() string {
+func (c CommonDialect) GetTableName() string {
 	return c.TableName
 }
 
-func (c SQLite) GetFieldName() string {
+func (c CommonDialect) GetFieldName() string {
 	if strings.Contains(c.FieldName, ".") {
 		return c.FieldName
 	}
@@ -47,7 +51,7 @@ func (c SQLite) GetFieldName() string {
 	return c.FieldName
 }
 
-func (c SQLite) GetColumnName(key string) string {
+func (c CommonDialect) GetColumnName(key string) string {
 	if strings.Contains(key, ".") {
 		return key
 	}
@@ -57,7 +61,7 @@ func (c SQLite) GetColumnName(key string) string {
 	return key
 }
 
-func (c SQLite) NormalizeValue(value interface{}) interface{} {
+func (c CommonDialect) NormalizeValue(value interface{}) interface{} {
 	str, isStr := value.(string)
 	if !isStr {
 		return value

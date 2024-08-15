@@ -12,7 +12,7 @@ func TestConvertFind(t *testing.T) {
 			"$gt": 2,
 		},
 	}
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 	}
 	result, values := covertFind(ctx, find)
@@ -39,7 +39,7 @@ func TestConvertFindAnd(t *testing.T) {
 			},
 		},
 	}
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 	}
 	result, values := covertFind(ctx, find)
@@ -61,7 +61,7 @@ func TestConvertFindOr(t *testing.T) {
 			},
 		},
 	}
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 	}
 	result, values := covertFind(ctx, find)

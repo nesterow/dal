@@ -3,11 +3,7 @@ package builder
 import (
 	"fmt"
 	"testing"
-
-	adapter "l12.xyz/dal/adapter"
 )
-
-type SQLiteContext = adapter.SQLite
 
 func TestJoin(t *testing.T) {
 	j := Join{
@@ -17,7 +13,7 @@ func TestJoin(t *testing.T) {
 		},
 		As: "LEFT",
 	}
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 	}
 	result, vals := j.Convert(ctx)
@@ -38,7 +34,7 @@ func TestConvertJoin(t *testing.T) {
 			},
 		},
 	}
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 	}
 	result, vals := convertJoin(ctx, joins...)
@@ -56,7 +52,7 @@ func TestConvertMap(t *testing.T) {
 	joins := []interface{}{
 		Map{"$for": "artist a", "$do": Map{"a.impl": "t.impl"}, "$as": "LEFT"},
 	}
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableAlias: "t",
 	}
 	result, vals := convertJoin(ctx, joins...)

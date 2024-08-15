@@ -5,6 +5,7 @@ import (
 	filters "l12.xyz/dal/filters"
 )
 
+type CommonDialect = adapter.CommonDialect
 type Map = map[string]interface{}
 type Fields = Map
 type Find = filters.Find

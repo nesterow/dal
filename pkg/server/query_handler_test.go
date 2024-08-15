@@ -15,6 +15,7 @@ import (
 )
 
 func TestQueryHandler(t *testing.T) {
+	adapter.RegisterDialect("sqlite3", adapter.CommonDialect{})
 	a := adapter.DBAdapter{Type: "sqlite3"}
 	db, err := a.Open("file::memory:?cache=shared")
 	if err != nil {
@@ -52,9 +53,7 @@ func TestQueryHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := QueryHandler(adapter.DBAdapter{
-		Type: "sqlite3",
-	})
+	handler := QueryHandler(a)
 	handler.ServeHTTP(rr, req)
 	res, _ := io.ReadAll(rr.Result().Body)
 	result := proto.UnmarshalRows(res)

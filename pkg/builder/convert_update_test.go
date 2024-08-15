@@ -5,7 +5,7 @@ import (
 )
 
 func TestConvertUpdate(t *testing.T) {
-	ctx := SQLiteContext{
+	ctx := CommonDialect{
 		TableName:  "test",
 		TableAlias: "t",
 		FieldName:  "test",
