@@ -1,3 +1,3 @@
 # [wip] DAL
-NodeJS Client for the [DAL]() Server.
 
+NodeJS Client for the [DAL]() Server.

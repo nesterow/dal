@@ -5,17 +5,14 @@ Data Accees Layer for SQL databases written in Go.
 Mongodb inspired query interface:
 
 ```typescript
-const query = Db
-  .In("users")
-  .Find({ 
-    fullname: { $glob: "*son" } 
+const query = Db.In("users")
+  .Find({
+    fullname: { $glob: "*son" },
   })
-  .Query()
+  .Query();
 
 // Result:
-console.log(users) 
-[  
-  { id: 25, fullname: "John Menson" }, 
-  { id: 76, fullname: "John Johnson" }
-]
+console.log(users)[
+  ({ id: 25, fullname: "John Menson" }, { id: 76, fullname: "John Johnson" })
+];
 ```

@@ -3,7 +3,8 @@
   "module": "dal/index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prettier": "^3.3.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -13,7 +14,8 @@
   },
   "scripts": {
     "test:client": "bun test:*",
-    "test:dal" : "bun test dal/__test__",
-    "test:serve": "cd dal/__test__/srv && go run main.go"
+    "test:dal": "bun test dal/__test__",
+    "test:serve": "cd dal/__test__/srv && go run main.go",
+    "fmt": "prettier --write ."
   }
 }
