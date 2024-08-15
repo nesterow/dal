@@ -110,6 +110,12 @@ func (a *DBAdapter) Query(req Query) (*sql.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
+	if req.Transaction {
+		tx, _ := db.Begin()
+		rows, err := tx.Query(req.Expression, req.Data...)
+		tx.Commit()
+		return rows, err
+	}
 	sfmt, err := db.Prepare(req.Expression)
 	if err != nil {
 		return nil, err
@@ -121,6 +127,12 @@ func (a *DBAdapter) Exec(req Query) (sql.Result, error) {
 	db, err := a.Open(req.Db)
 	if err != nil {
 		return nil, err
+	}
+	if req.Transaction {
+		tx, _ := db.Begin()
+		result, err := tx.Exec(req.Expression, req.Data...)
+		tx.Commit()
+		return result, err
 	}
 	sfmt, err := db.Prepare(req.Expression)
 	if err != nil {

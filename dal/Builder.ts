@@ -61,7 +61,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     });
   }
   private formatRow(data: unknown[]) {
-    if (!this.dtoTemplate) {
+    if (!this.dtoTemplate || this.dtoTemplate === Object) {
       return data;
     }
     const instance = new this.dtoTemplate(data);

@@ -33,6 +33,7 @@ func (q *Request) Parse(dialect adapter.Dialect) (adapter.Query, error) {
 		return adapter.Query{}, fmt.Errorf("Request format: commands are required")
 	}
 	b := builder.New(dialect)
+	exec := false
 	for _, cmd := range q.Commands {
 		if !slices.Contains(allowedMethods, cmd.Method) {
 			return adapter.Query{}, fmt.Errorf(
@@ -45,16 +46,22 @@ func (q *Request) Parse(dialect adapter.Dialect) (adapter.Query, error) {
 		if !method.IsValid() {
 			return adapter.Query{}, fmt.Errorf("method %s not found", cmd.Method)
 		}
+		if cmd.Method == "Insert" || cmd.Method == "Set" || cmd.Method == "Delete" {
+			exec = true
+		}
 		args := make([]reflect.Value, len(cmd.Args))
 		for i, arg := range cmd.Args {
 			args[i] = reflect.ValueOf(arg)
 		}
+		fmt.Print(exec, cmd.Method, args)
 		method.Call(args)
 	}
 	expr, data := b.Sql()
 	return adapter.Query{
-		Db:         q.Db,
-		Expression: expr,
-		Data:       data,
+		Db:          q.Db,
+		Expression:  expr,
+		Data:        data,
+		Transaction: b.Transaction,
+		Exec:        exec,
 	}, nil
 }

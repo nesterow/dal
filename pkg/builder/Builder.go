@@ -12,10 +12,12 @@ const (
 )
 
 type Builder struct {
-	TableName  string
-	TableAlias string
-	Parts      SQLParts
-	Dialect    Dialect
+	TableName   string
+	TableAlias  string
+	Parts       SQLParts
+	Dialect     Dialect
+	LastQuery   Find
+	Transaction bool
 }
 
 type SQLParts struct {
@@ -56,18 +58,22 @@ func (b *Builder) In(table string) *Builder {
 }
 
 func (b *Builder) Find(query Find) *Builder {
+	b.LastQuery = query
 	b.Parts.FiterExp, b.Parts.Values = covertFind(
 		b.Dialect,
 		query,
 	)
-	if b.Parts.Operation == "" {
+	if len(b.Parts.Operation) == 0 {
 		b.Parts.Operation = "SELECT"
 	}
-	if b.Parts.HavingExp == "" {
+	if len(b.Parts.HavingExp) == 0 {
 		b.Parts.HavingExp = "WHERE"
 	}
-	if b.Parts.FieldsExp == "" {
+	if len(b.Parts.FieldsExp) == 0 {
 		b.Parts.FieldsExp = "*"
+	}
+	if len(b.Parts.FiterExp) == 0 {
+		b.Parts.HavingExp = ""
 	}
 	return b
 }
@@ -118,7 +124,7 @@ func (b *Builder) Delete() *Builder {
 	return b
 }
 
-func (b *Builder) Insert(inserts []Map) *Builder {
+func (b *Builder) Insert(inserts ...Map) *Builder {
 	insertData, _ := convertInsert(b.Dialect, inserts)
 	b.Parts = SQLParts{
 		Operation: "INSERT INTO",
@@ -128,11 +134,13 @@ func (b *Builder) Insert(inserts []Map) *Builder {
 }
 
 func (b *Builder) Set(updates Map) *Builder {
+	b.Dialect = b.Dialect.New(DialectOpts{
+		"TableAlias": "",
+	})
 	updateData := convertUpdate(b.Dialect, updates)
-	b.Parts = SQLParts{
-		Operation: "UPDATE",
-		Update:    updateData,
-	}
+	b.Find(b.LastQuery)
+	b.Parts.Operation = "UPDATE"
+	b.Parts.Update = updateData
 	return b
 }
 
@@ -165,6 +173,11 @@ func (b *Builder) DoNothing() *Builder {
 	} else {
 		panic("DoNothing is only available for UPDATE operation")
 	}
+	return b
+}
+
+func (b *Builder) Tx() *Builder {
+	b.Transaction = true
 	return b
 }
 
@@ -202,11 +215,17 @@ func (b *Builder) Sql() (string, []interface{}) {
 	case operation == "INSERT INTO":
 		return b.Parts.Insert.Statement, b.Parts.Insert.Values
 	case operation == "UPDATE":
+		values := append(b.Parts.Update.Values, b.Parts.Values...)
 		return unspace(strings.Join([]string{
 			b.Parts.Update.Statement,
+			b.Parts.HavingExp,
+			b.Parts.FiterExp,
+			b.Parts.OrderExp,
+			b.Parts.LimitExp,
+			b.Parts.OffsetExp,
 			b.Parts.Update.Upsert,
 			b.Parts.Update.UpsertExp,
-		}, " ")), b.Parts.Update.Values
+		}, " ")), values
 	default:
 		return "", nil
 	}

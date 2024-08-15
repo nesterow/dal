@@ -21,7 +21,8 @@ func convertUpdate(ctx Dialect, updates Map) UpdateData {
 		values = append(values, updates[key])
 	}
 	sfmt := fmt.Sprintf(
-		"UPDATE %s SET %s", ctx.GetTableName(),
+		"UPDATE %s SET %s",
+		ctx.GetTableName(),
 		strings.Join(set, ","),
 	)
 	return UpdateData{

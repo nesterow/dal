@@ -18,16 +18,16 @@ type CommonDialect struct {
 }
 
 func (c CommonDialect) New(opts DialectOpts) Dialect {
-	tn := opts["TableName"]
-	if tn == "" {
+	tn, ok := opts["TableName"]
+	if !ok {
 		tn = c.TableName
 	}
-	ta := opts["TableAlias"]
-	if ta == "" {
+	ta, ok := opts["TableAlias"]
+	if !ok {
 		ta = c.TableAlias
 	}
-	fn := opts["FieldName"]
-	if fn == "" {
+	fn, ok := opts["FieldName"]
+	if !ok {
 		fn = c.FieldName
 	}
 	return CommonDialect{
@@ -39,6 +39,10 @@ func (c CommonDialect) New(opts DialectOpts) Dialect {
 
 func (c CommonDialect) GetTableName() string {
 	return c.TableName
+}
+
+func (c CommonDialect) GetTableAlias() string {
+	return c.TableAlias
 }
 
 func (c CommonDialect) GetFieldName() string {

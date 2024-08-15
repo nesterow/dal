@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+func TestBuilderFindEmpty(t *testing.T) {
+	db := New(CommonDialect{})
+	db.In("table t").Find(Query{}).Limit(10)
+	expect := "SELECT * FROM table t LIMIT 10"
+	result, _ := db.Sql()
+	if result != expect {
+		t.Errorf(`Expected: "%s", Got: %s`, expect, result)
+	}
+}
+
 func TestBuilderFind(t *testing.T) {
 	db := New(CommonDialect{})
 	db.In("table t").Find(Query{

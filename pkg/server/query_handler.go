@@ -37,6 +37,25 @@ func QueryHandler(db adapter.DBAdapter) http.Handler {
 			return
 		}
 
+		if query.Exec {
+			result, err := db.Exec(query)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "application/x-msgpack")
+			ra, _ := result.RowsAffected()
+			la, _ := result.LastInsertId()
+			res := proto.Response{
+				Id:           0,
+				RowsAffected: ra,
+				LastInsertId: la,
+			}
+			out, _ := res.MarshalMsg(nil)
+			w.Write(out)
+			return
+		}
+
 		rows, err := db.Query(query)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -46,6 +65,7 @@ func QueryHandler(db adapter.DBAdapter) http.Handler {
 
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Content-Type", "application/x-msgpack")
+
 		flusher, ok := w.(http.Flusher)
 		if !ok {
 			http.Error(w, "expected http.ResponseWriter to be an http.Flusher", http.StatusInternalServerError)

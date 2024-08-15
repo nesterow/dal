@@ -9,7 +9,7 @@ import (
 	"github.com/tinylib/msgp/msgp"
 )
 
-func TestMarshalUnmarshalBuildCmd(t *testing.T) {
+func TestMarshalUnmarshalBuilderMethod(t *testing.T) {
 	v := BuilderMethod{}
 	bts, err := v.MarshalMsg(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func TestMarshalUnmarshalBuildCmd(t *testing.T) {
 	}
 }
 
-func BenchmarkMarshalMsgBuildCmd(b *testing.B) {
+func BenchmarkMarshalMsgBuilderMethod(b *testing.B) {
 	v := BuilderMethod{}
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -41,7 +41,7 @@ func BenchmarkMarshalMsgBuildCmd(b *testing.B) {
 	}
 }
 
-func BenchmarkAppendMsgBuildCmd(b *testing.B) {
+func BenchmarkAppendMsgBuilderMethod(b *testing.B) {
 	v := BuilderMethod{}
 	bts := make([]byte, 0, v.Msgsize())
 	bts, _ = v.MarshalMsg(bts[0:0])
@@ -53,7 +53,7 @@ func BenchmarkAppendMsgBuildCmd(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshalBuildCmd(b *testing.B) {
+func BenchmarkUnmarshalBuilderMethod(b *testing.B) {
 	v := BuilderMethod{}
 	bts, _ := v.MarshalMsg(nil)
 	b.ReportAllocs()
@@ -67,14 +67,14 @@ func BenchmarkUnmarshalBuildCmd(b *testing.B) {
 	}
 }
 
-func TestEncodeDecodeBuildCmd(t *testing.T) {
+func TestEncodeDecodeBuilderMethod(t *testing.T) {
 	v := BuilderMethod{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
 
 	m := v.Msgsize()
 	if buf.Len() > m {
-		t.Log("WARNING: TestEncodeDecodeBuildCmd Msgsize() is inaccurate")
+		t.Log("WARNING: TestEncodeDecodeBuilderMethod Msgsize() is inaccurate")
 	}
 
 	vn := BuilderMethod{}
@@ -91,7 +91,7 @@ func TestEncodeDecodeBuildCmd(t *testing.T) {
 	}
 }
 
-func BenchmarkEncodeBuildCmd(b *testing.B) {
+func BenchmarkEncodeBuilderMethod(b *testing.B) {
 	v := BuilderMethod{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
@@ -105,7 +105,7 @@ func BenchmarkEncodeBuildCmd(b *testing.B) {
 	en.Flush()
 }
 
-func BenchmarkDecodeBuildCmd(b *testing.B) {
+func BenchmarkDecodeBuilderMethod(b *testing.B) {
 	v := BuilderMethod{}
 	var buf bytes.Buffer
 	msgp.Encode(&buf, &v)
