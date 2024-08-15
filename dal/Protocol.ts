@@ -55,7 +55,6 @@ export async function *decodeRowsIterator(stream: ReadableStream<Uint8Array>): A
     for (;;) {
         const { value, done } = await reader.read();
         if (done) {
-            console.log("done");
             break;
         }
         buf = new Uint8Array([...buf, ...value]);

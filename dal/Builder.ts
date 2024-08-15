@@ -36,9 +36,15 @@ type Options = {
     url: string;
 };
 
-export default class Builder {
+
+export default class Builder <
+I extends abstract new (...args: any) => any,
+>{
     private request: Request;
     private url: string;
+    private dtoTemplate: new (...args: any) => any = Object;
+    private methodCalls: Map<string, unknown[]> = new Map(); // one call per method
+    private headerRow: unknown[] | null = null;
     constructor(opts: Options) {
         this.request = {
             id: 0,
@@ -47,78 +53,97 @@ export default class Builder {
         };
         this.url = opts.url;
     }
-    private format(): void {
-        this.request.commands = METHODS.map((method) => {
-            const command = this.request.commands.find((command) => command.method === method);
-            return command;
-        }).filter(Boolean) as Request["commands"];
+    private formatRequest(): void {
+        this.request.commands = []
+        METHODS.forEach((method) => {
+            const args = this.methodCalls.get(method);
+            if (!args) {
+                return;
+            }
+            this.request.commands.push({ method, args });
+        })
     }
-    In(table: string): Builder {
-        this.request.commands.push({ method: "In", args: [table] });
+    private formatRow(data: unknown[]){
+        if (!this.dtoTemplate) {
+            return data;
+        }
+        const instance = new this.dtoTemplate(data);
+        for (const idx in this.headerRow!) {
+            const header = this.headerRow[idx] as string;
+            if (header in instance) {
+                instance[header] = data[idx];
+            }
+        }
+        return instance;
+    }
+    In(table: string): Builder<I> {
+        this.methodCalls.set("In", [table]);
         return this;
     }
-    Find(filter: FindFilter): Builder {
-        this.request.commands.push({ method: "Find", args: [filter] });
+    Find(filter: FindFilter): Builder<I> {
+        this.methodCalls.set("Find", [filter]);
         return this;
     }
-    Select(fields: string[]): Builder {
-        this.request.commands.push({ method: "Select", args: fields });
+    Select(fields: string[]): Builder<I> {
+        this.methodCalls.set("Select", fields);
         return this;
     }
-    Fields(fields: string[]): Builder {
+    Fields(fields: string[]): Builder<I> {
         this.Select(fields);
         return this;
     }
-    Join(...joins: JoinFilter[]): Builder {
-        this.request.commands.push({ method: "Join", args: joins });
+    Join(...joins: JoinFilter[]): Builder<I> {
+        this.methodCalls.set("Join", joins);
         return this;
     }
-    Group(fields: string[]): Builder {
-        this.request.commands.push({ method: "Group", args: fields });
+    Group(fields: string[]): Builder<I> {
+        this.methodCalls.set("Group", fields);
         return this;
     }
-    Sort(fields: SortOptions): Builder {
-        this.request.commands.push({ method: "Sort", args: fields });
+    Sort(fields: SortOptions): Builder<I> {
+        this.methodCalls.set("Sort", [fields]);
         return this;
     }
-    Limit(limit: number): Builder {
-        this.request.commands.push({ method: "Limit", args: [limit] });
+    Limit(limit: number): Builder<I> {
+        this.methodCalls.set("Limit", [limit]);
         return this;
     }
-    Offset(offset: number): Builder {
-        this.request.commands.push({ method: "Offset", args: [offset] });
+    Offset(offset: number): Builder<I> {
+        this.methodCalls.set("Offset", [offset]);
         return this;
     }
-    Delete(): Builder {
-        this.request.commands.push({ method: "Delete", args: [] });
+    Delete(): Builder<I> {
+        this.methodCalls.set("Delete", []);
         return this;
     }
-    Insert(data: Record<string, unknown>): Builder {
-        this.request.commands.push({ method: "Insert", args: [data] });
+    Insert(data: Record<string, unknown>): Builder<I> {
+        this.methodCalls.set("Insert", [data]);
         return this;
     }
-    Set(data: Record<string, unknown>): Builder {
-        this.request.commands.push({ method: "Set", args: [data] });
+    Set(data: Record<string, unknown>): Builder<I> {
+        this.methodCalls.set("Set", [data]);
         return this;
     }
-    Update(data: Record<string, unknown>): Builder {
+    Update(data: Record<string, unknown>): Builder<I> {
         this.Set(data);
         return this;
     }
-    OnConflict(...fields: string[]): Builder {
-        this.request.commands.push({ method: "OnConflict", args: fields });
+    OnConflict(...fields: string[]): Builder<I> {
+        this.methodCalls.set("OnConflict", fields);
         return this;
     }
-    DoUpdate(...fields: string[]): Builder {
-        this.request.commands.push({ method: "DoUpdate", args: fields });
+    DoUpdate(...fields: string[]): Builder<I> {
+        this.methodCalls.delete("DoNothing");
+        this.methodCalls.set("DoUpdate", fields);
         return this;
     }
-    DoNothing(): Builder {
-        this.request.commands.push({ method: "DoNothing", args: [] });
+    DoNothing(): Builder<I> {
+        this.methodCalls.delete("DoUpdate");
+        this.methodCalls.set("DoNothing", []);
         return this;
     }
-    async *Rows() {
-        this.format();
+    async *Rows<T = InstanceType<I>>(): AsyncGenerator<T> {
+        this.formatRequest();
         const response = await fetch(this.url, {
             method: "POST",
             body: new Blob([encodeRequest(this.request)]),
@@ -130,14 +155,27 @@ export default class Builder {
             throw new Error(await response.text());
         }
 
-        for await (const row of decodeRowsIterator(response.body!)) {
-            yield row;
+        const iterator = decodeRowsIterator(response.body!);
+        for await (const row of iterator) {
+            if (this.headerRow === null) {
+                this.headerRow = row.r;
+                await iterator.next();
+                continue;
+            }
+            yield this.formatRow(row.r);
         }
-        this.request = {
-            id: 0,
-            db: this.request.db,
-            commands: [],
-        };
+    }
+    As<T extends new (...args: any) => any>(template: T): Builder<T> {
+        this.dtoTemplate = template;
+        return this;
+    }
+    async Query<T = InstanceType<I>>(): Promise<T[]> {
+        const rows = this.Rows();
+        const result = [];
+        for await (const row of rows) {
+            result.push(row);
+        }
+        return result
     }
     
 }
