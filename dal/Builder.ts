@@ -1,5 +1,5 @@
-import type { Request } from "./Protocol";
-import { METHODS, encodeRequest, decodeRowsIterator } from "./Protocol";
+import type { Request, ExecResult } from "./Protocol";
+import { METHODS, encodeRequest, decodeResponse, decodeRowsIterator } from "./Protocol";
 
 type Primitive = string | number | boolean | null;
 
@@ -18,11 +18,13 @@ interface Filter extends Record<string, unknown> {
   $between?: [Primitive, Primitive];
   $nbetween?: [Primitive, Primitive];
 }
+
 interface FindFilter {
   [key: string]: Primitive | Filter | Filter[] | undefined;
 }
 
 type JoinCondition = "inner" | "left" | "cross" | "full outer";
+
 type JoinFilter = {
   $for: string;
   $do: FindFilter;
@@ -34,6 +36,7 @@ type SortOptions = Record<string, 1 | -1 | "asc" | "desc">;
 type Options = {
   database: string;
   url: string;
+  headers?: Record<string, string>;
 };
 
 export default class Builder<I extends abstract new (...args: any) => any> {
@@ -42,6 +45,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
   private dtoTemplate: new (...args: any) => any = Object;
   private methodCalls: Map<string, unknown[]> = new Map(); // one call per method
   private headerRow: unknown[] | null = null;
+  private httpHeaders: Record<string, string> = {};
   constructor(opts: Options) {
     this.request = {
       id: 0,
@@ -49,6 +53,9 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       commands: [],
     };
     this.url = opts.url;
+    if (opts.headers) {
+      this.httpHeaders = opts.headers;
+    }
   }
   private formatRequest(): void {
     this.request.commands = [];
@@ -143,6 +150,10 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     this.methodCalls.set("Tx", []);
     return this;
   }
+  As<T extends new (...args: any) => any>(template: T): Builder<T> {
+    this.dtoTemplate = template;
+    return this;
+  }
   async *Rows<T = InstanceType<I>>(): AsyncGenerator<T> {
     this.formatRequest();
     const response = await fetch(this.url, {
@@ -150,12 +161,12 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       body: new Blob([encodeRequest(this.request)]),
       headers: {
         "Content-Type": "application/x-msgpack",
+        ...this.httpHeaders,
       },
     });
     if (response.status !== 200) {
       throw new Error(await response.text());
     }
-
     const iterator = decodeRowsIterator(response.body!);
     for await (const row of iterator) {
       if (this.headerRow === null) {
@@ -166,10 +177,6 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       yield this.formatRow(row.r);
     }
   }
-  As<T extends new (...args: any) => any>(template: T): Builder<T> {
-    this.dtoTemplate = template;
-    return this;
-  }
   async Query<T = InstanceType<I>>(): Promise<T[]> {
     const rows = this.Rows();
     const result = [];
@@ -177,5 +184,21 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       result.push(row);
     }
     return result;
+  }
+  async Exec(): Promise<ExecResult> {
+    this.formatRequest();
+    const response = await fetch(this.url, {
+      method: "POST",
+      body: new Blob([encodeRequest(this.request)]),
+      headers: {
+        "Content-Type": "application/x-msgpack",
+        ...this.httpHeaders,
+      },
+    });
+    if (response.status !== 200) {
+      throw new Error(await response.text());
+    }
+    const buf = await response.arrayBuffer();
+    return decodeResponse(new Uint8Array(buf));
   }
 }

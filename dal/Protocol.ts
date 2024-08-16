@@ -11,17 +11,32 @@ export interface Request {
   commands: Method[];
 }
 
+export interface ExecResult {
+    Id: number;
+    RowsAffected: number;
+    LastInsertId: number;
+}
+
+interface Row {
+  r: unknown[];
+}
+
 export const METHODS =
   "In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing|Tx".split(
     "|",
-  );
+);
 
 export function encodeRequest(request: Request): Uint8Array {
   return encode(request);
 }
 
-export interface Row {
-  r: unknown[];
+export function decodeResponse(input: Uint8Array): ExecResult {
+  const res = decode(input) as {i: number; ra: number; li: number};
+    return {
+        Id: res.i,
+        RowsAffected: res.ra,
+        LastInsertId: res.li,
+    };
 }
 
 const ROW_TAG = [0x81, 0xa1, 0x72];
