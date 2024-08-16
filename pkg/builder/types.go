@@ -5,6 +5,7 @@ import (
 	filters "l12.xyz/dal/filters"
 )
 
+type RawSql = map[string]interface{}
 type CommonDialect = adapter.CommonDialect
 type Map = map[string]interface{}
 type Fields = Map

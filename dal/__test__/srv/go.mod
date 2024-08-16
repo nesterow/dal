@@ -12,7 +12,7 @@ replace l12.xyz/dal/adapter v0.0.0 => ../../../pkg/adapter
 
 replace l12.xyz/dal/utils v0.0.0 => ../../../pkg/utils
 
-require l12.xyz/dal/proto v0.0.0 // indirect
+
 
 replace l12.xyz/dal/proto v0.0.0 => ../../../pkg/proto
 
@@ -28,4 +28,5 @@ require (
 	l12.xyz/dal/builder v0.0.0 // indirect
 	l12.xyz/dal/filters v0.0.0 // indirect
 	l12.xyz/dal/utils v0.0.0 // indirect
+	l12.xyz/dal/proto v0.0.0 // indirect
 )

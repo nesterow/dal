@@ -22,7 +22,7 @@ interface Row {
 }
 
 export const METHODS =
-  "In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing|Tx".split(
+  "Raw|In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing|Tx".split(
     "|",
 );
 

@@ -53,7 +53,6 @@ func (q *Request) Parse(dialect adapter.Dialect) (adapter.Query, error) {
 		for i, arg := range cmd.Args {
 			args[i] = reflect.ValueOf(arg)
 		}
-		fmt.Print(exec, cmd.Method, args)
 		method.Call(args)
 	}
 	expr, data := b.Sql()

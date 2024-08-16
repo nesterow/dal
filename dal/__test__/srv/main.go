@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -24,12 +23,12 @@ func mock(adapter adapter.DBAdapter) {
 }
 
 func main() {
-	defer os.Remove("test.sqlite")
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
 		os.Remove("test.sqlite")
+		os.Exit(1)
 	}()
 	db := adapter.DBAdapter{
 		Type: "sqlite3",
@@ -40,7 +39,4 @@ func main() {
 	mux.Handle("/", queryHandler)
 	fmt.Println("Server running on port 8111")
 	http.ListenAndServe(":8111", mux)
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	wg.Wait()
 }

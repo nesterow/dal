@@ -59,3 +59,16 @@ test("Query format", async () => {
   }
   expect(true).toBe(true);
 });
+
+test("Query raw", async () => {
+  const dal = new DAL(options);
+  const rows = await dal
+    .Raw("SELECT * FROM test WHERE id = 1")
+    .As(DTO)
+    .Query();
+  for (const row of rows) {
+    expect(row.id).toBeDefined();
+    expect(row.age).toBeUndefined();
+  }
+  expect(true).toBe(true);
+});

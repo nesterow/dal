@@ -7,7 +7,7 @@ import (
 
 const (
 	BUILDER_VERSION        = "0.0.1"
-	BUILDER_CLIENT_METHODS = "In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing"
+	BUILDER_CLIENT_METHODS = "Raw|In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing"
 	BUILDER_SERVER_METHODS = "Sql"
 )
 
@@ -18,6 +18,7 @@ type Builder struct {
 	Dialect     Dialect
 	LastQuery   Find
 	Transaction bool
+	RawSql      RawSql
 }
 
 type SQLParts struct {
@@ -45,6 +46,12 @@ func New(dialect Dialect) *Builder {
 		},
 		Dialect: dialect,
 	}
+}
+
+func (b *Builder) Raw(sql map[string]interface{}) *Builder {
+	b.Parts.Operation = "RAW"
+	b.RawSql = sql
+	return b
 }
 
 func (b *Builder) In(table string) *Builder {
@@ -184,6 +191,8 @@ func (b *Builder) Tx() *Builder {
 func (b *Builder) Sql() (string, []interface{}) {
 	operation := b.Parts.Operation
 	switch {
+	case operation == "RAW":
+		return b.RawSql["s"].(string), b.RawSql["v"].([]interface{})
 	case operation == "SELECT" || operation == "SELECT DISTINCT":
 		return unspace(strings.Join([]string{
 			b.Parts.Operation,

@@ -80,6 +80,10 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     }
     return instance;
   }
+  Raw(sql: string, ...values: unknown[]): Builder<I> {
+    this.methodCalls.set("Raw", [{s: sql, v: values}]);
+    return this;
+  }
   In(table: string): Builder<I> {
     this.methodCalls.set("In", [table]);
     return this;
