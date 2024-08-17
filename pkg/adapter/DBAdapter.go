@@ -8,12 +8,13 @@ import (
 
 /*
 DBAdapter
-Automatically creates connections for each database URL.
-Executes queries on the specified database.
-Closes connections older than ConnectionLiveTime
+- Automatically creates connections for each database URL.
+- Executes queries on the specified database.
+- Closes connections older than ConnectionLiveTime
 */
 type DBAdapter struct {
 	Type               string
+	DbInit             []string
 	MaxAttempts        int
 	ConnectionLiveTime int
 	dbs                *DBMap
@@ -23,6 +24,10 @@ type DBMap struct {
 	Connections        map[string]*sql.DB
 	ConnectionAttempts map[string]int
 	ConnectionTime     map[string]int64
+}
+
+func (a *DBAdapter) AfterOpen(sql string) {
+	a.DbInit = append(a.DbInit, sql)
 }
 
 func (a *DBAdapter) Open(url string) (*sql.DB, error) {
@@ -69,6 +74,9 @@ func (a *DBAdapter) Open(url string) (*sql.DB, error) {
 	}
 
 	attempts[url] = 0
+	for _, sql := range a.DbInit {
+		connections[url].Exec(sql)
+	}
 	return connections[url], nil
 }
 
@@ -113,6 +121,10 @@ func (a *DBAdapter) Query(req Query) (*sql.Rows, error) {
 	if req.Transaction {
 		tx, _ := db.Begin()
 		rows, err := tx.Query(req.Expression, req.Data...)
+		if err != nil {
+			tx.Rollback()
+			return nil, err
+		}
 		tx.Commit()
 		return rows, err
 	}
@@ -131,6 +143,10 @@ func (a *DBAdapter) Exec(req Query) (sql.Result, error) {
 	if req.Transaction {
 		tx, _ := db.Begin()
 		result, err := tx.Exec(req.Expression, req.Data...)
+		if err != nil {
+			tx.Rollback()
+			return nil, err
+		}
 		tx.Commit()
 		return result, err
 	}

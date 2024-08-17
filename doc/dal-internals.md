@@ -59,11 +59,11 @@ Locations:
 
 Parsing the row stream (pseudo code):
 
-```python
+```
 header = [0x81, 0xa1, 0x72]
-input: byte[] = ...
-buffer: byte[] = []
-output: byte[][] = []
+input: byte[]
+buffer: byte[]
+output: byte[][]
 while i < input.length:
     if input[i] != 0x81:
         buffer << input[i]
@@ -140,7 +140,7 @@ Locations:
 ```
 
 ### Builder Methods
-In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing
+Raw|In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing
 [TS Docs]()
 [Golang Docs]()
 

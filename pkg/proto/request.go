@@ -49,6 +49,14 @@ func (q *Request) Parse(dialect adapter.Dialect) (adapter.Query, error) {
 		if cmd.Method == "Insert" || cmd.Method == "Set" || cmd.Method == "Delete" {
 			exec = true
 		}
+		// check if raw is an exec query
+		if cmd.Method == "Raw" {
+			qo, ok := cmd.Args[0].(map[string]interface{})
+			if ok {
+				sq := qo["s"].(string)
+				exec = !strings.HasPrefix(sq, "SELECT")
+			}
+		}
 		args := make([]reflect.Value, len(cmd.Args))
 		for i, arg := range cmd.Args {
 			args[i] = reflect.ValueOf(arg)

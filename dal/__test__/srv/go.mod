@@ -12,13 +12,11 @@ replace l12.xyz/dal/adapter v0.0.0 => ../../../pkg/adapter
 
 replace l12.xyz/dal/utils v0.0.0 => ../../../pkg/utils
 
-
-
 replace l12.xyz/dal/proto v0.0.0 => ../../../pkg/proto
 
-require l12.xyz/dal/server v0.0.0
+require l12.xyz/dal/handler v0.0.0
 
-replace l12.xyz/dal/server v0.0.0 => ../../../pkg/server
+replace l12.xyz/dal/handler v0.0.0 => ../../../pkg/handler
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.22
@@ -27,6 +25,6 @@ require (
 	github.com/tinylib/msgp v1.2.0 // indirect
 	l12.xyz/dal/builder v0.0.0 // indirect
 	l12.xyz/dal/filters v0.0.0 // indirect
-	l12.xyz/dal/utils v0.0.0 // indirect
 	l12.xyz/dal/proto v0.0.0 // indirect
+	l12.xyz/dal/utils v0.0.0 // indirect
 )

@@ -1,4 +1,4 @@
-module l12.xyz/dal/server
+module l12.xyz/dal/http
 
 go 1.22.6
 

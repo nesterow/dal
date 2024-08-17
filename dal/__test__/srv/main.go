@@ -9,7 +9,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	"l12.xyz/dal/adapter"
-	"l12.xyz/dal/server"
+	"l12.xyz/dal/handler"
 )
 
 func mock(adapter adapter.DBAdapter) {
@@ -34,7 +34,7 @@ func main() {
 		Type: "sqlite3",
 	}
 	mock(db)
-	queryHandler := server.QueryHandler(db)
+	queryHandler := handler.QueryHandler(db)
 	mux := http.NewServeMux()
 	mux.Handle("/", queryHandler)
 	fmt.Println("Server running on port 8111")
