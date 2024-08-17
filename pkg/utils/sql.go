@@ -11,6 +11,11 @@ import (
 	"github.com/pkg/errors"
 )
 
+/*
+This function validates and escapes the SQL query.
+
+I copied it from somewhere, but I can't remember where is original source. Tell me if you know.
+*/
 func EscapeSQL(sql string, args ...interface{}) ([]byte, error) {
 	buf := make([]byte, 0, len(sql))
 	argPos := 0

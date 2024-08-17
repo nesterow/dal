@@ -63,6 +63,7 @@ Serve starts the basic server on the configured port.
 Use `GetHandler` to get a handler for a custom server.
 */
 func (s *SQLiteServer) Serve() {
+	s.Init()
 	err := http.ListenAndServe(":"+s.Port, s.GetHandler())
 	if err != nil {
 		panic(err)
