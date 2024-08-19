@@ -1,6 +1,7 @@
 package facade
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -64,6 +65,8 @@ Use `GetHandler` to get a handler for a custom server.
 */
 func (s *SQLiteServer) Serve() {
 	s.Init()
+	log.Println("Starting server on port " + s.Port)
+	log.Println("Using directory: " + s.Cwd)
 	err := http.ListenAndServe(":"+s.Port, s.GetHandler())
 	if err != nil {
 		panic(err)
