@@ -4,10 +4,11 @@ go 1.22.6
 
 require github.com/pkg/errors v0.9.1 // indirect
 
-require github.com/nesterow/dal/pkg/utils v0.0.0
+require (
+	github.com/nesterow/dal/pkg/adapter v0.0.0-00010101000000-000000000000
+	github.com/nesterow/dal/pkg/utils v0.0.0-00010101000000-000000000000
+)
 
-replace github.com/nesterow/dal/pkg/utils v0.0.0 => ../utils
+replace github.com/nesterow/dal/pkg/utils => ../utils
 
-require github.com/nesterow/dal/pkg/adapter v0.0.0
-
-replace github.com/nesterow/dal/pkg/adapter v0.0.0 => ../adapter
+replace github.com/nesterow/dal/pkg/adapter => ../adapter
