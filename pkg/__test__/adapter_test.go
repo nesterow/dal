@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
+	"pkg/adapter"
+
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/nesterow/dal/pkg/adapter"
 )
 
 func TestAdapterBasic(t *testing.T) {

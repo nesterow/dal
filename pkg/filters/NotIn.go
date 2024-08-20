@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nesterow/dal/pkg/utils"
+	"pkg/utils"
 )
 
 type NotIn struct {

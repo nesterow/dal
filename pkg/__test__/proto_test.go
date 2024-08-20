@@ -5,9 +5,10 @@ import (
 	"os"
 	"testing"
 
+	"pkg/adapter"
+	"pkg/proto"
+
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/proto"
 )
 
 func TestProtoMessagePack(t *testing.T) {

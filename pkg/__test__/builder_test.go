@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"testing"
 
+	"pkg/adapter"
+	"pkg/builder"
+
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/builder"
 )
 
 func TestBuilderBasic(t *testing.T) {

@@ -7,9 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"pkg/adapter"
+	"pkg/handler"
+
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/handler"
 )
 
 func mock(adapter adapter.DBAdapter) {

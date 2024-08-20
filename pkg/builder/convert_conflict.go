@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	utils "github.com/nesterow/dal/pkg/utils"
+	utils "pkg/utils"
 )
 
 func convertConflict(ctx Dialect, fields ...string) string {

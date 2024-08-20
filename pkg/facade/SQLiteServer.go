@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/handler"
+	"pkg/adapter"
+	"pkg/handler"
 )
 
 type SQLiteServer struct {
