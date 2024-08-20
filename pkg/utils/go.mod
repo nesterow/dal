@@ -1,4 +1,4 @@
-module github.com/nesterow/dal/pkg/utils/v0.0.0
+module pkg/utils
 
 go 1.22.6
 

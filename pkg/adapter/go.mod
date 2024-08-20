@@ -1,4 +1,4 @@
-module github.com/nesterow/dal/pkg/adapter/v0.0.0
+module pkg/adapter
 
 go 1.22.6
 

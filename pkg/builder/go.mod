@@ -1,4 +1,4 @@
-module github.com/nesterow/dal/pkg/builder/v0.0.0
+module pkg/builder
 
 go 1.22.6
 
