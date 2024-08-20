@@ -1,17 +1,16 @@
 #include <napi.h>
-#include <stdio.h>
 #include "dal.h"
 
 static void _InitSQLite(const Napi::CallbackInfo& args) {
   Napi::Buffer<uint8_t> buf = args[0].As<Napi::Buffer<uint8_t>>();
-  char * charstr = reinterpret_cast<char *>(buf.Data());
+  GoString charstr = {reinterpret_cast<char *>(buf.Data()), long(buf.Length())};
   InitSQLite(charstr);
 }
 
 static Napi::Value Handle(const Napi::CallbackInfo& args) {
   Napi::Buffer<uint8_t> buf = args[0].As<Napi::Buffer<uint8_t>>();
-  char * charstr = reinterpret_cast<char *>(buf.Data());
-  GoSlice result = HandleQuery(charstr);
+  GoSlice input = {reinterpret_cast<void *>(buf.Data()), long(buf.Length()), long(buf.Length())};
+  GoSlice result = HandleQuery(input);
   return Napi::Buffer<char>::Copy(args.Env(), reinterpret_cast<char *>(result.data), result.len);
 }
 

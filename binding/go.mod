@@ -1,4 +1,4 @@
-module srv
+module binding
 
 go 1.22.6
 
