@@ -1,4 +1,4 @@
-module pkg/http
+module github.com/nesterow/dal/pkg/handler
 
 go 1.22.6
 

@@ -14,9 +14,10 @@ replace pkg/handler => ./pkg/handler
 
 replace pkg/proto => ./pkg/proto
 
+require github.com/nesterow/dal/pkg/facade v0.0.0-20240820173401-37a82c835b34
+
 require (
 	github.com/mattn/go-sqlite3 v1.14.22
-	github.com/nesterow/dal/pkg/facade v0.0.0
 )
 
 require (

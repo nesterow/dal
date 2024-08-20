@@ -1,4 +1,4 @@
-module pkg/facade
+module github.com/nesterow/dal/pkg/facade
 
 go 1.22.6
 
