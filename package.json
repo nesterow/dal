@@ -1,25 +1,26 @@
 {
-  "name": "dal",
-  "module": "dal/index.ts",
+  "name": "@nesterow/dal",
+  "module": "dist/index.js",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "node-addon-api": "^8.1.0",
-    "node-gyp": "^10.2.0",
     "prettier": "^3.3.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@msgpack/msgpack": "^3.0.0-beta2"
+    "@msgpack/msgpack": "^3.0.0-beta2",
+    "node-addon-api": "^8.1.0",
+    "node-gyp": "^10.2.0"
   },
   "scripts": {
     "test:client": "bun test:*",
     "test:dal": "bun test dal/__test__",
     "test:serve": "cd dal/__test__/srv && go run main.go",
     "fmt": "prettier --write .",
+    "build": "tsc",
     "preinstall": "cd binding && go build -buildmode=c-archive -o dal.a ./dal.go",
-    "cgo:build": "node-gyp configure build"
+    "postinstall": "node-gyp configure build"
   }
 }

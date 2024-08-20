@@ -1,4 +1,4 @@
-module github.com/nesterow/dal/pkg/filters
+module github.com/nesterow/dal/pkg/filters/v0.0.0
 
 go 1.22.6
 

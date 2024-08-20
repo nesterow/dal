@@ -1,4 +1,4 @@
-module github.com/nesterow/dal/pkg/proto
+module github.com/nesterow/dal/pkg/proto/v0.0.0
 
 go 1.22.6
 
