@@ -2,25 +2,15 @@ module github.com/nesterow/dal/pkg/handler
 
 go 1.22.6
 
-replace github.com/nesterow/dal/pkg/adapter => ../adapter
-
-replace github.com/nesterow/dal/pkg/proto => ../proto
-
-replace github.com/nesterow/dal/pkg/builder => ../builder
-
-replace github.com/nesterow/dal/pkg/filters => ../filters
-
-replace github.com/nesterow/dal/pkg/utils => ../utils
-
 require (
-	github.com/nesterow/dal/pkg/adapter v0.0.0-20240820175837-f06ad4a34238
-	github.com/nesterow/dal/pkg/proto v0.0.0-20240820175837-f06ad4a34238
+	github.com/nesterow/dal/pkg/adapter v0.0.0-20240820191021-7dcd046e6ca0
+	github.com/nesterow/dal/pkg/proto v0.0.0-20240820191021-7dcd046e6ca0
 )
 
 require (
-	github.com/nesterow/dal/pkg/builder v0.0.0-20240820175837-f06ad4a34238 // indirect
-	github.com/nesterow/dal/pkg/filters v0.0.0-20240820175837-f06ad4a34238 // indirect
-	github.com/nesterow/dal/pkg/utils v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/builder v0.0.0-20240820191021-7dcd046e6ca0 // indirect
+	github.com/nesterow/dal/pkg/filters v0.0.0-20240820191021-7dcd046e6ca0 // indirect
+	github.com/nesterow/dal/pkg/utils v0.0.0-20240820191021-7dcd046e6ca0 // indirect
 )
 
 require (

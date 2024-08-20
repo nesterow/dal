@@ -1,2 +1,6 @@
+github.com/nesterow/dal/pkg/adapter v0.0.0-20240820191021-7dcd046e6ca0 h1:6hEsRsRRgg7sNNlfgrW8q1Oy1VxdE8B1O6VA/osPKhY=
+github.com/nesterow/dal/pkg/adapter v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:wjGEK1nECugo/QDtS3mpXTs+SeiENn5Ds1TiCZlKUx0=
+github.com/nesterow/dal/pkg/utils v0.0.0-20240820191021-7dcd046e6ca0 h1:CYDcRDYrXXD8fQdkXbbPMJvvLnBy4nI36BrRMQEsWUo=
+github.com/nesterow/dal/pkg/utils v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:0XWmrxZfyoEAZoCOxP3quEOP7ZNK2Lhvtpeux8C74mw=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

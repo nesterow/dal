@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"pkg/adapter"
-	"pkg/proto"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/proto"
 
 	_ "github.com/mattn/go-sqlite3"
 )

@@ -1,5 +1,15 @@
 github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o4kU=
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
+github.com/nesterow/dal/pkg/adapter v0.0.0-20240820191021-7dcd046e6ca0 h1:6hEsRsRRgg7sNNlfgrW8q1Oy1VxdE8B1O6VA/osPKhY=
+github.com/nesterow/dal/pkg/adapter v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:wjGEK1nECugo/QDtS3mpXTs+SeiENn5Ds1TiCZlKUx0=
+github.com/nesterow/dal/pkg/builder v0.0.0-20240820191021-7dcd046e6ca0 h1:S37CEWRRLdeLA3V8J4XEa8CmmO4Z+auifYf1GfNRo64=
+github.com/nesterow/dal/pkg/builder v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:EmozdaZEPYE2+4qpK1cw0eIS8yx9LcrVRKstvq2dgCg=
+github.com/nesterow/dal/pkg/filters v0.0.0-20240820191021-7dcd046e6ca0 h1:2CDPDKwR+PSGCI6dMbSqI5Zf8Ugg9nY2CMN87BDZ1Xg=
+github.com/nesterow/dal/pkg/filters v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:1wKJbE/13P756EjkLU8xzbdhR+dJYfn6Vlw4J2jFJaA=
+github.com/nesterow/dal/pkg/proto v0.0.0-20240820191021-7dcd046e6ca0 h1:p2VAOo7aMmFehU17S7aZ3tiwIMEjQUuzLHTNO4jQHWA=
+github.com/nesterow/dal/pkg/proto v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:okcJheB01HZrsNryT2Hun1DjYI7Hj/+/oD6+4PVW3TU=
+github.com/nesterow/dal/pkg/utils v0.0.0-20240820191021-7dcd046e6ca0 h1:CYDcRDYrXXD8fQdkXbbPMJvvLnBy4nI36BrRMQEsWUo=
+github.com/nesterow/dal/pkg/utils v0.0.0-20240820191021-7dcd046e6ca0/go.mod h1:0XWmrxZfyoEAZoCOxP3quEOP7ZNK2Lhvtpeux8C74mw=
 github.com/philhofer/fwd v1.1.3-0.20240612014219-fbbf4953d986 h1:jYi87L8j62qkXzaYHAQAhEapgukhenIMZRBKTNRLHJ4=
 github.com/philhofer/fwd v1.1.3-0.20240612014219-fbbf4953d986/go.mod h1:RqIHx9QI14HlwKwm98g9Re5prTQ6LdeRQn+gXJFxsJM=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
