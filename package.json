@@ -1,5 +1,10 @@
 {
   "name": "@nesterow/dal",
+  "version": "0.0.1",
+  "repository":"https://github.com/nesterow/dal.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "module": "dist/index.js",
   "type": "module",
   "devDependencies": {
@@ -20,6 +25,7 @@
     "test:serve": "cd dal/__test__/srv && go run main.go",
     "fmt": "prettier --write .",
     "build": "tsc",
+    "prepublish": "tsc",
     "preinstall": "cd binding && go build -buildmode=c-archive -o dal.a ./dal.go",
     "postinstall": "node-gyp configure build"
   }
