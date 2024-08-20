@@ -1,7 +1,6 @@
 package facade
 
 import (
-	"log"
 	"reflect"
 
 	"github.com/nesterow/dal/pkg/adapter"
@@ -31,20 +30,37 @@ func HandleQuery(input *[]byte, output *[]byte) int {
 	req := proto.Request{}
 	_, err := req.UnmarshalMsg(*input)
 	if err != nil {
-		log.Println(*input)
-		log.Printf("failed to unmarshal request: %v", err)
-		return 1
+		res := proto.Response{
+			Id:           0,
+			RowsAffected: -1,
+			LastInsertId: -1,
+			Msg:          "failed to unmarshal request",
+		}
+		*output, _ = res.MarshalMsg(nil)
+		return 0
 	}
 	query, err := req.Parse(adapter.GetDialect(db.Type))
 	if err != nil {
-		log.Printf("failed to parse request: %v", err)
-		return 1
+		res := proto.Response{
+			Id:           0,
+			RowsAffected: -1,
+			LastInsertId: -1,
+			Msg:          err.Error(),
+		}
+		*output, _ = res.MarshalMsg(nil)
+		return 0
 	}
 	if query.Exec {
 		result, err := db.Exec(query)
 		if err != nil {
-			log.Printf("failed to exec query: %v", err)
-			return 1
+			res := proto.Response{
+				Id:           0,
+				RowsAffected: -1,
+				LastInsertId: -1,
+				Msg:          err.Error(),
+			}
+			*output, _ = res.MarshalMsg(nil)
+			return 0
 		}
 		ra, _ := result.RowsAffected()
 		la, _ := result.LastInsertId()
@@ -58,8 +74,14 @@ func HandleQuery(input *[]byte, output *[]byte) int {
 	}
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Printf("failed to query: %v", err)
-		return 1
+		res := proto.Response{
+			Id:           0,
+			RowsAffected: -1,
+			LastInsertId: -1,
+			Msg:          err.Error(),
+		}
+		*output, _ = res.MarshalMsg(nil)
+		return 0
 	}
 	columns, _ := rows.Columns()
 	types, _ := rows.ColumnTypes()

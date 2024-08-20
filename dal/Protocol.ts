@@ -15,6 +15,7 @@ export interface ExecResult {
     Id: number;
     RowsAffected: number;
     LastInsertId: number;
+    Msg?: string;
 }
 
 interface Row {
@@ -31,11 +32,12 @@ export function encodeRequest(request: Request): Uint8Array {
 }
 
 export function decodeResponse(input: Uint8Array): ExecResult {
-  const res = decode(input) as {i: number; ra: number; li: number};
+  const res = decode(input) as {i: number; ra: number; li: number, m?: string};
     return {
         Id: res.i,
         RowsAffected: res.ra,
         LastInsertId: res.li,
+        Msg: res.m,
     };
 }
 
