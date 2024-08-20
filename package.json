@@ -19,7 +19,7 @@
     "test:dal": "bun test dal/__test__",
     "test:serve": "cd dal/__test__/srv && go run main.go",
     "fmt": "prettier --write .",
-    "preinstall":"cd binding && go build -buildmode=c-archive -o dal.a ./dal.go", 
+    "preinstall": "cd binding && go build -buildmode=c-archive -o dal.a ./dal.go",
     "cgo:build": "node-gyp configure build"
   }
 }
