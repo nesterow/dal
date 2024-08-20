@@ -2,6 +2,7 @@
 import { encode } from "https://deno.land/x/msgpack@v1.2/mod.ts";
 
 const Query = {
+  id: 9,
   db: "database.sqlite",
   commands: [
     { method: "In", args: ["data"] },

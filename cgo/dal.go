@@ -4,8 +4,8 @@ package main
 import "C"
 import (
 	"strings"
-	"unsafe"
 
+	_ "github.com/mattn/go-sqlite3"
 	"l12.xyz/dal/facade"
 )
 
@@ -17,15 +17,11 @@ func InitSQLite(pragmas *C.char) {
 }
 
 //export HandleQuery
-func HandleQuery(input *C.char) *C.char {
+func HandleQuery(input *C.char) []byte {
 	var in, out []byte
-	inPtr := unsafe.Pointer(input)
-	defer C.free(inPtr)
-
-	in = C.GoBytes(inPtr, C.int(len(C.GoString(input))))
+	in = []byte(C.GoString(input))
 	facade.HandleQuery(&in, &out)
-	output := C.CString(string(out))
-	return output
+	return out
 }
 
 func main() {}

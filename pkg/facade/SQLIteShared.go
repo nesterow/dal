@@ -31,6 +31,7 @@ func HandleQuery(input *[]byte, output *[]byte) int {
 	req := proto.Request{}
 	_, err := req.UnmarshalMsg(*input)
 	if err != nil {
+		log.Println(*input)
 		log.Printf("failed to unmarshal request: %v", err)
 		return 1
 	}

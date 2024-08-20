@@ -16,7 +16,10 @@ replace l12.xyz/dal/utils v0.0.0 => ../pkg/utils
 
 replace l12.xyz/dal/proto v0.0.0 => ../pkg/proto
 
-require l12.xyz/dal/facade v0.0.0
+require (
+	github.com/mattn/go-sqlite3 v1.14.22
+	l12.xyz/dal/facade v0.0.0
+)
 
 require l12.xyz/dal/handler v0.0.0 // indirect
 

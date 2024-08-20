@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -15,6 +16,7 @@ func TestProtoMessagePack(t *testing.T) {
 		t.Fatalf("failed to read file: %v", err)
 	}
 	req := proto.Request{}
+	fmt.Println(message)
 	req.UnmarshalMsg(message)
 	query, err := req.Parse(adapter.CommonDialect{})
 	if err != nil {

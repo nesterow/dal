@@ -79,7 +79,7 @@ extern "C" {
 #endif
 
 extern void InitSQLite(char* pragmas);
-extern char* HandleQuery(char* input);
+extern GoSlice HandleQuery(char* input);
 
 #ifdef __cplusplus
 }
