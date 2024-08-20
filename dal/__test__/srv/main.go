@@ -8,8 +8,8 @@ import (
 	"syscall"
 
 	_ "github.com/mattn/go-sqlite3"
-	"l12.xyz/dal/adapter"
-	"l12.xyz/dal/handler"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/handler"
 )
 
 func mock(adapter adapter.DBAdapter) {

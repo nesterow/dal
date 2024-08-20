@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"reflect"
 
-	"l12.xyz/dal/adapter"
-	"l12.xyz/dal/proto"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/proto"
 )
 
 /*

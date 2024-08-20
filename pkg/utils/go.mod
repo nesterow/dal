@@ -1,4 +1,4 @@
-module l12.xyz/dal/utils
+module github.com/nesterow/dal/pkg/utils
 
 go 1.22.6
 

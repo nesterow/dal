@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
-	"l12.xyz/dal/adapter"
-	"l12.xyz/dal/builder"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/builder"
 )
 
 func TestBuilderBasic(t *testing.T) {

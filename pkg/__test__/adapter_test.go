@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
-	"l12.xyz/dal/adapter"
+	"github.com/nesterow/dal/pkg/adapter"
 )
 
 func TestAdapterBasic(t *testing.T) {

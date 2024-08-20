@@ -3,7 +3,7 @@ package filters
 import (
 	"fmt"
 
-	"l12.xyz/dal/utils"
+	"github.com/nesterow/dal/pkg/utils"
 )
 
 type NotBetween struct {

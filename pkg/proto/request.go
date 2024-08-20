@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	"l12.xyz/dal/adapter"
-	"l12.xyz/dal/builder"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/builder"
 )
 
 //go:generate msgp

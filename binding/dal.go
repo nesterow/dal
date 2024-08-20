@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
-	"l12.xyz/dal/facade"
+	"github.com/nesterow/dal/pkg/facade"
 )
 
 //export InitSQLite

@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	_ "github.com/mattn/go-sqlite3"
-	"l12.xyz/dal/adapter"
-	"l12.xyz/dal/proto"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/proto"
 )
 
 func TestProtoMessagePack(t *testing.T) {
