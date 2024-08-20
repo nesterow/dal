@@ -4,7 +4,7 @@ import "C"
 import (
 	"strings"
 
-	"pkg/facade"
+	"github.com/nesterow/dal/pkg/facade"
 
 	_ "github.com/mattn/go-sqlite3"
 )

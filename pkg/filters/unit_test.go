@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	adapter "pkg/adapter"
+	"github.com/nesterow/dal/pkg/adapter"
 )
 
 type SQLiteContext = adapter.CommonDialect

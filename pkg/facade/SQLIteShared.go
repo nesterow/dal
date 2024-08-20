@@ -4,8 +4,8 @@ import (
 	"log"
 	"reflect"
 
-	"pkg/adapter"
-	"pkg/proto"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/proto"
 )
 
 var db adapter.DBAdapter

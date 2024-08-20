@@ -3,7 +3,7 @@ package filters
 import (
 	"fmt"
 
-	"pkg/utils"
+	"github.com/nesterow/dal/pkg/utils"
 )
 
 type Between struct {

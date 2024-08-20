@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"pkg/adapter"
-	"pkg/handler"
+	"github.com/nesterow/dal/pkg/adapter"
+	"github.com/nesterow/dal/pkg/handler"
 
 	_ "github.com/mattn/go-sqlite3"
 )

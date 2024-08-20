@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"pkg/utils"
+	"github.com/nesterow/dal/pkg/utils"
 )
 
 type In struct {

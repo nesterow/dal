@@ -2,26 +2,26 @@ module github.com/nesterow/dal/pkg/handler
 
 go 1.22.6
 
-replace pkg/filters => ../filters
+replace github.com/nesterow/dal/pkg/adapter => ../adapter
 
-replace pkg/builder => ../builder
+replace github.com/nesterow/dal/pkg/proto => ../proto
+
+replace github.com/nesterow/dal/pkg/builder => ../builder
+
+replace github.com/nesterow/dal/pkg/filters => ../filters
+
+replace github.com/nesterow/dal/pkg/utils => ../utils
 
 require (
-	pkg/adapter v0.0.0
-	pkg/proto v0.0.0-00010101000000-000000000000
+	github.com/nesterow/dal/pkg/adapter v0.0.0-20240820175837-f06ad4a34238
+	github.com/nesterow/dal/pkg/proto v0.0.0-20240820175837-f06ad4a34238
 )
 
 require (
-	pkg/builder v0.0.0 // indirect
-	pkg/filters v0.0.0 // indirect
-	pkg/utils v0.0.0 // indirect
+	github.com/nesterow/dal/pkg/builder v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/filters v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/utils v0.0.0-20240820175837-f06ad4a34238 // indirect
 )
-
-replace pkg/adapter => ../adapter
-
-replace pkg/utils => ../utils
-
-replace pkg/proto => ../proto
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.22

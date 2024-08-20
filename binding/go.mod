@@ -2,35 +2,33 @@ module binding
 
 go 1.22.6
 
-replace pkg/filters v0.0.0 => ../pkg/filters
+replace github.com/nesterow/dal/pkg/adapter => ../pkg/adapter
 
-replace pkg/builder v0.0.0 => ../pkg/builder
+replace github.com/nesterow/dal/pkg/proto => ../pkg/proto
 
-replace pkg/handler v0.0.0 => ../pkg/handler
+replace github.com/nesterow/dal/pkg/builder => ../pkg/builder
 
-require pkg/adapter v0.0.0 // indirect
+replace github.com/nesterow/dal/pkg/filters => ../pkg/filters
 
-replace pkg/adapter v0.0.0 => ../pkg/adapter
+replace github.com/nesterow/dal/pkg/utils => ../pkg/utils
 
-replace pkg/utils v0.0.0 => ../pkg/utils
+replace github.com/nesterow/dal/pkg/handler => ../pkg/handler
 
-replace pkg/proto v0.0.0 => ../pkg/proto
+replace github.com/nesterow/dal/pkg/facade => ../pkg/facade
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.22
-	pkg/facade v0.0.0
+	github.com/nesterow/dal/pkg/facade v0.0.0-20240820175837-f06ad4a34238
 )
 
-require pkg/handler v0.0.0 // indirect
-
-replace pkg/facade v0.0.0 => ../pkg/facade
-
 require (
+	github.com/nesterow/dal/pkg/adapter v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/builder v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/filters v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/handler v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/proto v0.0.0-20240820175837-f06ad4a34238 // indirect
+	github.com/nesterow/dal/pkg/utils v0.0.0-20240820175837-f06ad4a34238 // indirect
 	github.com/philhofer/fwd v1.1.3-0.20240612014219-fbbf4953d986 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/tinylib/msgp v1.2.0 // indirect
-	pkg/builder v0.0.0 // indirect
-	pkg/filters v0.0.0 // indirect
-	pkg/proto v0.0.0 // indirect
-	pkg/utils v0.0.0 // indirect
 )

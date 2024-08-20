@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"pkg/utils"
+	"github.com/nesterow/dal/pkg/utils"
 )
 
 func convertGroup(ctx Dialect, keys []string) string {
