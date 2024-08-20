@@ -18,7 +18,7 @@ replace github.com/nesterow/dal/pkg/facade => ../pkg/facade
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.22
-	github.com/nesterow/dal/pkg/facade v0.0.0-20240820192515-7a408c994181
+	github.com/nesterow/dal/pkg/facade v0.0.0-20240820230328-f8e28d2a2e42
 )
 
 require (
@@ -26,7 +26,7 @@ require (
 	github.com/nesterow/dal/pkg/builder v0.0.0-20240820192515-7a408c994181 // indirect
 	github.com/nesterow/dal/pkg/filters v0.0.0-20240820192515-7a408c994181 // indirect
 	github.com/nesterow/dal/pkg/handler v0.0.0-20240820192515-7a408c994181 // indirect
-	github.com/nesterow/dal/pkg/proto v0.0.0-20240820192515-7a408c994181 // indirect
+	github.com/nesterow/dal/pkg/proto v0.0.0-20240820230328-f8e28d2a2e42 // indirect
 	github.com/nesterow/dal/pkg/utils v0.0.0-20240820192515-7a408c994181 // indirect
 	github.com/philhofer/fwd v1.1.3-0.20240612014219-fbbf4953d986 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
