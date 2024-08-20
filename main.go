@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
-	facade.Init()
-	facade.Serve()
+	server := facade.SQLiteServer{}
+	server.Init()
+	server.Serve()
 }
