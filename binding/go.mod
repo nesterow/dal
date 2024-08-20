@@ -18,7 +18,7 @@ replace github.com/nesterow/dal/pkg/facade => ../pkg/facade
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.22
-	github.com/nesterow/dal/pkg/facade v0.0.0-20240820230328-f8e28d2a2e42
+	github.com/nesterow/dal/pkg/facade v0.0.0-20240820230908-3f75eedbfcb1
 )
 
 require (
