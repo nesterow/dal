@@ -102,14 +102,15 @@ const db = new DAL({
   url: "http://localhost:8111",
 });
 
+// SELECT * FROM test t WHERE name GLOB '*son' AND age >= 18
 const rows = db
   .In("test t")
   .Find({
     name: { $glob: "*son" },
     age: { $gte: 18 },
-  }) // SELECT * FROM test t WHERE name GLOB '*son' AND age >= 18
+  })
   .As(UserDTO) // Map every row to DTO
-  .Rows(); // Get iterator
+  .Rows();
 
 for await (const row of rows) {
   console.log(row); // Jason, Jackson
