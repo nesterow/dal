@@ -1,7 +1,7 @@
 {
   "name": "@nesterow/dal",
-  "version": "0.0.1",
-  "repository":"https://github.com/nesterow/dal.git",
+  "version": "0.0.2",
+  "repository": "https://github.com/nesterow/dal.git",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },

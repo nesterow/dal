@@ -1,5 +1,10 @@
 import type { Request, ExecResult } from "./Protocol";
-import { METHODS, encodeRequest, decodeResponse, decodeRowsIterator } from "./Protocol";
+import {
+  METHODS,
+  encodeRequest,
+  decodeResponse,
+  decodeRowsIterator,
+} from "./Protocol";
 
 type Primitive = string | number | boolean | null;
 
@@ -40,12 +45,12 @@ type Options = {
 };
 
 export default class Builder<I extends abstract new (...args: any) => any> {
-  private request: Request;
-  private url: string;
-  private dtoTemplate: new (...args: any) => any = Object;
-  private methodCalls: Map<string, unknown[]> = new Map(); // one call per method
-  private headerRow: unknown[] | null = null;
-  private httpHeaders: Record<string, string> = {};
+  protected request: Request;
+  protected url: string;
+  protected dtoTemplate: new (...args: any) => any = Object;
+  protected methodCalls: Map<string, unknown[]> = new Map(); // one call per method
+  protected headerRow: unknown[] | null = null;
+  protected httpHeaders: Record<string, string> = {};
   constructor(opts: Options) {
     this.request = {
       id: 0,
@@ -57,7 +62,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       this.httpHeaders = opts.headers;
     }
   }
-  private formatRequest(): void {
+  protected formatRequest(): void {
     this.request.commands = [];
     METHODS.forEach((method) => {
       const args = this.methodCalls.get(method);
@@ -67,7 +72,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       this.request.commands.push({ method, args });
     });
   }
-  private formatRow(data: unknown[]) {
+  protected formatRow(data: unknown[]) {
     if (!this.dtoTemplate || this.dtoTemplate === Object) {
       return data;
     }
@@ -81,7 +86,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     return instance;
   }
   Raw(sql: string, ...values: unknown[]): Builder<I> {
-    this.methodCalls.set("Raw", [{s: sql, v: values}]);
+    this.methodCalls.set("Raw", [{ s: sql, v: values }]);
     return this;
   }
   In(table: string): Builder<I> {

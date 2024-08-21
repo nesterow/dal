@@ -2,7 +2,6 @@
 
 Data Accees Layer for SQL databases written in Go.
 
-
 ## NodeJs Client
 
 Mongodb inspired query interface:

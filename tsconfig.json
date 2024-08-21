@@ -1,8 +1,5 @@
 {
-  "files": [
-    "dal/index.ts",
-    "dal/SQLite.ts",
-  ],
+  "files": ["dal/index.ts", "dal/Binding.ts"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -23,6 +20,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    "outDir": "dist",
+    "outDir": "dist"
   }
 }

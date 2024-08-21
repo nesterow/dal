@@ -1,7 +1,7 @@
 # DAL Internal Architecture
 
 - The Client is written in TypeScript.
-- The DAL server written in Golang. 
+- The DAL server written in Golang.
 
 ## Components
 
@@ -30,10 +30,10 @@ Client consists of a query builder and protocol decoder/encoder.
 
 ## Protocol
 
-
 Protocol utilizes messagepack for encoding and decoding the messages.
 
 There following types of encoded data:
+
 - Row stream
 - Query (request)
 - Response (exec result)
@@ -54,7 +54,7 @@ Locations:
 ### Row Stream
 
 - The server sends streaming (chunked) data to the client, every chunk is a row.
-- Every row starts with a 3-byte header `{0x81, 0xa1, 0x72}` 
+- Every row starts with a 3-byte header `{0x81, 0xa1, 0x72}`
 - The first row is the header row, which contains the column names.
 
 Parsing the row stream (pseudo code):
@@ -76,6 +76,7 @@ output << header + buffer
 ```
 
 MessagePack schema for the row stream:
+
 ```go
 type Row struct {
 	Data []interface{} `msg:"r"`
@@ -91,8 +92,6 @@ type Row struct {
   - Db: string (required, database name)
   - Commands: []BuilderMethod (required, list of Builder arguments)
 
-
-
 ```go
 type BuilderMethod struct {
 	Method string        `msg:"method"`
@@ -107,6 +106,7 @@ type Request struct {
 ```
 
 ### Response
+
 The response is inteneded for operation results that don't return rows.
 
 ```go
@@ -140,6 +140,7 @@ Locations:
 ```
 
 ### Builder Methods
+
 Raw|In|Find|Select|Fields|Join|Group|Sort|Limit|Offset|Delete|Insert|Set|Update|OnConflict|DoUpdate|DoNothing
 [TS Docs]()
 [Golang Docs]()
