@@ -27,7 +27,7 @@ func (s *SQLiteServer) Init() {
 	}
 	os.MkdirAll(s.Cwd, os.ModePerm)
 	os.Chdir(s.Cwd)
-	s.Cwd = os.Getenv("SQLITE_PORT")
+	s.Port = os.Getenv("SQLITE_PORT")
 	if s.Port == "" {
 		s.Port = "8118"
 	}
