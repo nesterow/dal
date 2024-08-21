@@ -6,7 +6,7 @@ It can be used as a Go or NodeJS package (requires compiler) to create your own 
 
 _Notes:_
 
-- This project is still in early alpha. You need to build it yourself and use at your own risk.
+- This project is still in **early alpha**. You need to build it yourself and use at your own risk.
 - At the time only SQLite is implemented, however, other drivers might work.
 
 _Use cases:_
