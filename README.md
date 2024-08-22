@@ -13,7 +13,8 @@ _Use cases:_
 
 - For IOT networks when MySQL/PG are too heavy.
 - If you need a layer between your application and the database (i.e. for caching).
-- If you want a MongoDB-like query interface for your SQL.
+- If you want a MongoDB-like query interface for your SQL db.
+- When you need a SQLite proxy (useful to share datasets with services)
 
 ## Usage
 
@@ -116,3 +117,12 @@ for await (const row of rows) {
   console.log(row); // Jason, Jackson
 }
 ```
+
+## Internals
+
+The client uses a light builder and messagepack over http. It is relatively easy to implement a client in any language see [the docs](./doc/)
+
+## License
+
+While in alpha stage the project is free for research purposes. 
+Later it will be released under MIT-like license with AI/dataset exclusion terms.
