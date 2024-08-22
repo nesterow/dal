@@ -78,16 +78,12 @@ export async function* decodeRowsIterator(
   stream: ReadableStream<Uint8Array>,
 ): AsyncGenerator<Row> {
   const reader = stream.getReader();
-  let buf = new Uint8Array();
   for (;;) {
     const { value, done } = await reader.read();
     if (done) {
       break;
     }
-    buf = new Uint8Array([...buf, ...value]);
-    // the server flushes after each row
-    // so we decode "complete" rows
-    const rows = decodeRows(buf);
+    const rows = decodeRows(value);
     for (const row of rows) {
       yield row;
     }

@@ -180,7 +180,6 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     for await (const row of iterator) {
       if (this.headerRow === null) {
         this.headerRow = row.r;
-        await iterator.next();
         continue;
       }
       yield this.formatRow(row.r);
