@@ -1,19 +1,22 @@
 # DAL
 
 **Data Access Layer**
+
 DAL is a proxy layer for SQL databases with a MongoDB inspired query interface.
-It can be used as a Go or NodeJS package (requires compiler) to create your own proxy and apply custom middlewares.
+It can be used as a Go or NodeJS package (requires compiler). 
+It is modular and allows to create your own proxy and apply custom middlewares.
 
 _Notes:_
 
-- This project is still in early alpha. You need to build it yourself and use at your own risk.
+- This project is still in **early alpha**. You need to build it yourself and use at your own risk.
 - At the time only SQLite is implemented, however, other drivers might work.
 
 _Use cases:_
 
 - For IOT networks when MySQL/PG are too heavy.
 - If you need a layer between your application and the database (i.e. for caching).
-- If you want a MongoDB-like query interface for your SQL.
+- If you want a MongoDB-like query interface for your SQL db.
+- When you need a SQLite proxy (useful to share datasets with services)
 
 ## Usage
 
@@ -102,16 +105,26 @@ const db = new DAL({
   url: "http://localhost:8111",
 });
 
+// SELECT * FROM test t WHERE name GLOB '*son' AND age >= 18
 const rows = db
   .In("test t")
   .Find({
     name: { $glob: "*son" },
     age: { $gte: 18 },
-  }) // SELECT * FROM test t WHERE name GLOB '*son' AND age >= 18
+  })
   .As(UserDTO) // Map every row to DTO
-  .Rows(); // Get iterator
+  .Rows();
 
 for await (const row of rows) {
   console.log(row); // Jason, Jackson
 }
 ```
+
+## Internals
+
+The client uses a light builder and messagepack over http. It is relatively easy to implement a client in any language see [the docs](./doc/)
+
+## License
+
+While in alpha stage the project is free for research purposes. 
+Later it will be released under MIT-like license with AI/dataset exclusion terms.
