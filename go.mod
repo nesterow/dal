@@ -2,7 +2,7 @@ module github.com/nesterow/dal
 
 go 1.22.6
 
-require github.com/nesterow/dal/pkg/facade v0.0.0-20240821202841-36d7d315e298
+require github.com/nesterow/dal/pkg/facade v0.0.0-20240823050354-d4638d4c4b0b
 
 require github.com/mattn/go-sqlite3 v1.14.22
 
