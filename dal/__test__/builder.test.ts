@@ -22,7 +22,7 @@ test("Rows iter, no format", async () => {
     })
     .Rows<any[]>();
   for await (const row of rows) {
-    console.log(row);
+    //console.log(row);
     expect(row.length).toBe(3);
   }
   expect(true).toBe(true);
@@ -32,7 +32,7 @@ test("Rows iter, format", async () => {
   const dal = new DAL(options);
   const rows = dal.In("test t").Find({}).As(DTO).Rows();
   for await (const row of rows) {
-    console.log(row);
+    //console.log(row);
     //expect(row.id).toBe(1);
   }
   expect(true).toBe(true);

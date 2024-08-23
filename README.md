@@ -3,7 +3,7 @@
 **Data Access Layer**
 
 DAL is a proxy layer for SQL databases with a MongoDB inspired query interface.
-It can be used as a Go or NodeJS package (requires compiler). 
+It can be used as a Go or NodeJS package (requires compiler).
 It is modular and allows to create your own proxy and apply custom middlewares.
 
 _Notes:_
@@ -126,5 +126,5 @@ The client uses a light builder and messagepack over http. It is relatively easy
 
 ## License
 
-While in alpha stage the project is free for research purposes. 
+While in alpha stage the project is free for research purposes.
 Later it will be released under MIT-like license with AI/dataset exclusion terms.
