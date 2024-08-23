@@ -4,7 +4,7 @@ go 1.22.6
 
 require (
 	github.com/nesterow/dal/pkg/adapter v0.0.0-20240820192515-7a408c994181
-	github.com/nesterow/dal/pkg/handler v0.0.0-20240823050354-d4638d4c4b0b	   
+	github.com/nesterow/dal/pkg/handler v0.0.0-20240823050743-ae641b7ee894
 	github.com/nesterow/dal/pkg/proto v0.0.0-20240820230328-f8e28d2a2e42
 )
 

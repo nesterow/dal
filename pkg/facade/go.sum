@@ -6,8 +6,8 @@ github.com/nesterow/dal/pkg/builder v0.0.0-20240820192515-7a408c994181 h1:Ex2XjU
 github.com/nesterow/dal/pkg/builder v0.0.0-20240820192515-7a408c994181/go.mod h1:mVt1QOFEeGLdi+ZbMLzVw3LVtFB2tYWxZRouhkOThJU=
 github.com/nesterow/dal/pkg/filters v0.0.0-20240820192515-7a408c994181 h1:Vi6v1T68/oayGfoX8k/FpgvfMsCUqxMsowTHKXY70VE=
 github.com/nesterow/dal/pkg/filters v0.0.0-20240820192515-7a408c994181/go.mod h1:6aUr+2+D+184FTSXgziW6r1bvcKTY+Ie3TW4iET0g6I=
-github.com/nesterow/dal/pkg/handler v0.0.0-20240820192515-7a408c994181 h1:dAzXf3pEYEKTF+WHJxmfy81XLPJ7BcFy3MEYYsLeyQE=
-github.com/nesterow/dal/pkg/handler v0.0.0-20240820192515-7a408c994181/go.mod h1:yxMmRLpnj8PmBylCcVr0PJwpy2uLwNjsMFk36kGNWOE=
+github.com/nesterow/dal/pkg/handler v0.0.0-20240823050743-ae641b7ee894 h1:nPlCoVDXzpFGX4cmInLOKoAB7cTpcnjGDevCahF1Db8=
+github.com/nesterow/dal/pkg/handler v0.0.0-20240823050743-ae641b7ee894/go.mod h1:aUueTAR2yb5ZCcXqgm4euJTTlScTCqTyT187oNQN5zY=
 github.com/nesterow/dal/pkg/proto v0.0.0-20240820230328-f8e28d2a2e42 h1:bUnae1O6MEYWEZepd2ir3iSkydfX9/8DLRoH0U+EWHM=
 github.com/nesterow/dal/pkg/proto v0.0.0-20240820230328-f8e28d2a2e42/go.mod h1:YGGcF6rUmoknTFR3csZyLjJhpuFBw9S+DQa61P8B8kY=
 github.com/nesterow/dal/pkg/utils v0.0.0-20240820192515-7a408c994181 h1:b/D2uq18D6CzAh+NUyD1cM7s/q/aQZEpXy57iKyzg8k=
