@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import DAL from "../Builder";
+import {DAL} from "..";
 
 const options = {
   database: "test.sqlite",

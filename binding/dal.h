@@ -19,6 +19,11 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 /* Start of preamble from import "C" comments.  */
 
 
+#line 3 "dal.go"
+ #include <stdlib.h>
+ #include <stdio.h>
+
+#line 1 "cgo-generated-wrapper"
 
 
 /* End of preamble from import "C" comments.  */
@@ -75,7 +80,10 @@ extern "C" {
 #endif
 
 extern void InitSQLite(GoString pragmas);
-extern GoSlice HandleQuery(GoSlice input);
+extern int CreateRowIterator(GoSlice input);
+extern void* NextRow(int itid);
+extern int GetLen(int idx);
+extern void FreeIter(int itid);
 
 #ifdef __cplusplus
 }

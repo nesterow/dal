@@ -1,6 +1,7 @@
 package facade
 
 import (
+	"database/sql"
 	"reflect"
 
 	"github.com/nesterow/dal/pkg/adapter"
@@ -23,6 +24,73 @@ func InitSQLite(pragmas []string) {
 		}
 		db.AfterOpen(pragma)
 	}
+}
+
+type RowsIter struct {
+	Result []byte
+	rows   *sql.Rows
+}
+
+func (r *RowsIter) Exec(input []byte) {
+	InitSQLite([]string{})
+	req := proto.Request{}
+	_, e := req.UnmarshalMsg(input)
+	query, err := req.Parse(adapter.GetDialect(db.Type))
+	if err != nil || e != nil {
+		res := proto.Response{
+			Msg: "failed to unmarshal request",
+		}
+		r.Result, _ = res.MarshalMsg(nil)
+		return
+	}
+	if query.Exec {
+		result, err := db.Exec(query)
+		if err != nil {
+			res := proto.Response{
+				Msg: err.Error(),
+			}
+			r.Result, _ = res.MarshalMsg(nil)
+			return
+		}
+		ra, _ := result.RowsAffected()
+		la, _ := result.LastInsertId()
+		res := proto.Response{
+			Id:           0,
+			RowsAffected: ra,
+			LastInsertId: la,
+		}
+		r.Result, _ = res.MarshalMsg(nil)
+		return
+	}
+	rows, err := db.Query(query)
+	if err != nil {
+		res := proto.Response{
+			Msg: err.Error(),
+		}
+		r.Result, _ = res.MarshalMsg(nil)
+		return
+	}
+	r.rows = rows
+}
+
+func (r *RowsIter) Close() {
+	if r.rows == nil {
+		return
+	}
+	r.rows.Close()
+}
+
+func (r *RowsIter) Next() []byte {
+	columns, _ := r.rows.Columns()
+	types, _ := r.rows.ColumnTypes()
+	data := make([]interface{}, len(columns))
+	for i := range data {
+		typ := reflect.New(types[i].ScanType()).Interface()
+		data[i] = &typ
+	}
+	r.rows.Scan(data...)
+	cols, _ := proto.MarshalRow(data)
+	return cols
 }
 
 func HandleQuery(input *[]byte, output *[]byte) int {
@@ -83,6 +151,7 @@ func HandleQuery(input *[]byte, output *[]byte) int {
 		*output, _ = res.MarshalMsg(nil)
 		return 0
 	}
+	defer rows.Close()
 	columns, _ := rows.Columns()
 	types, _ := rows.ColumnTypes()
 	cols, _ := proto.MarshalRow(columns)
