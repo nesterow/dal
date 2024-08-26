@@ -18,20 +18,26 @@ export default class CBuilder<
     super({ database: opts.database, url: "" });
   }
   /**
-   * Not really an iterator, since addonn allocates memory for all rows
-   * but returns an iterator
+   * TODO: handle responses
    */
   async *Rows<T = InstanceType<I>>(): AsyncGenerator<T> {
     this.formatRequest();
     const req = Buffer.from(encodeRequest(this.request));
-    const response = Binding.Handle(req);
-    const rows = decodeRows(response);
-    for (const row of rows) {
-      if (this.headerRow === null) {
-        this.headerRow = row.r;
-        continue;
+    const iter = Binding.RowIterator(req);
+    for (;;) {
+      const response = iter.next();
+      const rows = decodeRows(response);
+      if (rows.length === 0) {
+        iter.free();
+        break;
       }
-      yield this.formatRow(row.r);
+      for (const row of rows) {
+        if (this.headerRow === null) {
+          this.headerRow = row.r;
+          continue;
+        }
+        yield this.formatRow(row.r);
+      }
     }
   }
   async Query<T = InstanceType<I>>(): Promise<T[]> {
@@ -45,7 +51,8 @@ export default class CBuilder<
   async Exec(): Promise<ExecResult> {
     this.formatRequest();
     const req = Buffer.from(encodeRequest(this.request));
-    const response = Binding.Handle(req);
+    const iter = Binding.RowIterator(req);
+    const response = iter.next();
     return decodeResponse(response);
   }
 }
