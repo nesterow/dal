@@ -27,8 +27,9 @@ func InitSQLite(pragmas []string) {
 }
 
 type RowsIter struct {
-	Result []byte
-	rows   *sql.Rows
+	Result  []byte
+	Columns []string
+	rows    *sql.Rows
 }
 
 func (r *RowsIter) Exec(input []byte) {
@@ -83,7 +84,13 @@ func (r *RowsIter) Close() {
 func (r *RowsIter) Next() []byte {
 	columns, _ := r.rows.Columns()
 	types, _ := r.rows.ColumnTypes()
+	if r.Columns == nil {
+		r.Columns = columns
+		cols, _ := proto.MarshalRow(columns)
+		return cols
+	}
 	data := make([]interface{}, len(columns))
+	r.rows.Next()
 	for i := range data {
 		typ := reflect.New(types[i].ScanType()).Interface()
 		data[i] = &typ

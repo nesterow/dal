@@ -3,6 +3,9 @@
 *.a
 *.dylib
 build/
+database.sqlite
+database.sqlite-shm
+database.sqlite-wal
 # Logs
 
 logs
