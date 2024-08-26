@@ -55,7 +55,7 @@ const buf = fs.readFileSync("./pkg/__test__/proto_test.msgpack");
 const iter = dal.RowIterator(buf);
 MEM("AFTER INIT");
 let dataTransferedBytes = 0;
-for (let i = 0; i < 10000000000; i++) {
+for (let i = 0; i < 100000000; i++) {
   const b = iter.next();
   if (b.length === 0) {
     break;
