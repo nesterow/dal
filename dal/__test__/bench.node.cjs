@@ -1,6 +1,8 @@
 const fs = require("fs");
 const dal = require("../../build/Release/dal.node");
 
+const Mb = (num) => Math.round(num / 1024 / 1024);
+
 class Stats {
   constructor() {
     this.calls = 0;
@@ -26,37 +28,42 @@ class Stats {
   print() {
     console.log(`
 AVERAGE:
-rss: ${mb(this.avg_rss)} Mb
-external: ${mb(this.avg_external)} Mb
-buffers: ${mb(this.avg_heapUsed)} Mb
-total: ${mb(this.avg_heapTotal)} Mb`);
+rss: ${Mb(this.avg_rss)} Mb
+external: ${Mb(this.avg_external)} Mb
+buffers: ${Mb(this.avg_heapUsed)} Mb
+total: ${Mb(this.avg_heapTotal)} Mb`);
   }
 }
+
+
 const stats = new Stats();
 let prevMem = process.memoryUsage();
 stats.add(prevMem);
-const mb = (num) => Math.round(num / 1024 / 1024);
+
+
 function MEM(when = "") {
   const mem = process.memoryUsage();
   stats.add(mem);
   console.log(`
 ${when}
-rss: ${mb(mem.rss)} Mb [delta> ${mem.rss - prevMem.rss}] 
-external: ${mb(mem.external)} Mb [delta> ${mem.external - prevMem.external}] 
-buffers: ${mb(mem.heapUsed)} Mb [delta> ${mem.heapUsed - prevMem.heapUsed}]
-total: ${mb(mem.heapTotal)} Mb [delta> ${mem.heapTotal - prevMem.heapTotal}]`);
+rss: ${Mb(mem.rss)} Mb [delta> ${mem.rss - prevMem.rss}] 
+external: ${Mb(mem.external)} Mb [delta> ${mem.external - prevMem.external}] 
+buffers: ${Mb(mem.heapUsed)} Mb [delta> ${mem.heapUsed - prevMem.heapUsed}]
+total: ${Mb(mem.heapTotal)} Mb [delta> ${mem.heapTotal - prevMem.heapTotal}]`);
 }
+
 
 console.time("Time to end");
 MEM("START");
 
 const buf = fs.readFileSync("./pkg/__test__/proto_test.msgpack");
 
-const iter = dal.RowIterator(buf);
+const Iterator = dal.RowIterator(buf);
 MEM("AFTER INIT");
+
 let dataTransferedBytes = 0;
 for (let i = 0; i < 100000000; i++) {
-  const b = iter.next();
+  const b = Iterator.next();
   if (b.length === 0) {
     break;
   }
@@ -68,11 +75,12 @@ for (let i = 0; i < 100000000; i++) {
 
 MEM("AFTER ITERATION");
 
-iter.free();
+Iterator.free();
 MEM("AFTER CLEANUP");
 
-console.log("\nData transfered: ", mb(dataTransferedBytes), "Mb");
+console.log("\nData transfered: ", Mb(dataTransferedBytes), "Mb");
 console.timeEnd("Time to end");
+
 setTimeout(() => {
   MEM("AFTER SOME TIME");
   stats.avg();

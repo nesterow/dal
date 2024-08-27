@@ -1,5 +1,5 @@
 {
-  "files": ["dal/index.ts", "dal/Binding.ts"],
+  "files": ["dal/index.ts", "dal/Binding.ts", "dal/node.napi.ts"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
