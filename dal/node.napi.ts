@@ -27,7 +27,7 @@ export default class CBuilder<
       const response = iter.next();
       const rows = decodeRows(response);
       if (rows.length === 0) {
-        iter.free();
+        iter.cleanup();
         break;
       }
       for (const row of rows) {

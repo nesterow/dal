@@ -35,9 +35,8 @@ const {
   },
 });
 
-function initSQLite(pragmas: string) {
-  const buf = Buffer.from(pragmas);
-  InitSQLite(ptr(buf));
+function initSQLite(pragmas: Buffer) {
+  InitSQLite(ptr(pragmas));
 }
 
 function rowIterator(buf: Buffer) {

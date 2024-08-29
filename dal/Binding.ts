@@ -2,7 +2,7 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 type RowIterator = {
   next: () => Buffer;
-  free: () => void;
+  cleanup: () => void;
 };
 type SQLite = {
   initSQLite: (pragmas: Buffer) => void;

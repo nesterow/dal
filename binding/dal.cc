@@ -23,11 +23,11 @@ static Napi::Object RowIterator(const Napi::CallbackInfo& args) {
     free(next);
     return val;
   };
-  auto free_iter = [=](const Napi::CallbackInfo& a){
+  auto cleanup = [=](const Napi::CallbackInfo& a){
     FreeIter(iter);
   };
   it.Set("next", Napi::Function::New(env, next_row));
-  it.Set("free", Napi::Function::New(env, free_iter));
+  it.Set("cleanup", Napi::Function::New(env, cleanup));
   return it;
 }
 
