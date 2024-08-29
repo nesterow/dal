@@ -1,8 +1,8 @@
 package builder
 
 import (
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/filters"
+	"l12.xyz/x/dal/pkg/adapter"
+	"l12.xyz/x/dal/pkg/filters"
 )
 
 type RawSql = map[string]interface{}

@@ -1,9 +1,8 @@
 package main
 
 import (
-	"github.com/nesterow/dal/pkg/facade"
-
 	_ "github.com/mattn/go-sqlite3"
+	"l12.xyz/x/dal/pkg/facade"
 )
 
 func main() {

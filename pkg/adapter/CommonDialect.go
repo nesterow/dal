@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nesterow/dal/pkg/utils"
+	"l12.xyz/x/dal/pkg/utils"
 )
 
 /*

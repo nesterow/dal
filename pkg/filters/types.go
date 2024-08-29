@@ -1,6 +1,6 @@
 package filters
 
-import "github.com/nesterow/dal/pkg/adapter"
+import "l12.xyz/x/dal/pkg/adapter"
 
 type DialectOpts = adapter.DialectOpts
 type Dialect = adapter.Dialect

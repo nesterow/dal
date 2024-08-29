@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/nesterow/dal/pkg/facade"
+	"l12.xyz/x/dal/pkg/facade"
 
 	_ "github.com/mattn/go-sqlite3"
 )

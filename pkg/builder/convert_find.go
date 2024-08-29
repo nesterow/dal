@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nesterow/dal/pkg/filters"
+	"l12.xyz/x/dal/pkg/filters"
 )
 
 type Values = []interface{}

@@ -1,4 +1,0 @@
-github.com/nesterow/dal/pkg/utils v0.0.0-20240820192515-7a408c994181 h1:b/D2uq18D6CzAh+NUyD1cM7s/q/aQZEpXy57iKyzg8k=
-github.com/nesterow/dal/pkg/utils v0.0.0-20240820192515-7a408c994181/go.mod h1:0XWmrxZfyoEAZoCOxP3quEOP7ZNK2Lhvtpeux8C74mw=
-github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
-github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

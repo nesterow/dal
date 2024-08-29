@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/builder"
+	"l12.xyz/x/dal/pkg/adapter"
+	"l12.xyz/x/dal/pkg/builder"
 
 	_ "github.com/mattn/go-sqlite3"
 )

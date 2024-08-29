@@ -10,8 +10,8 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/nesterow/dal/pkg/adapter"
-	"github.com/nesterow/dal/pkg/proto"
+	"l12.xyz/x/dal/pkg/adapter"
+	"l12.xyz/x/dal/pkg/proto"
 )
 
 func TestQueryHandler(t *testing.T) {
