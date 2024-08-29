@@ -3,7 +3,7 @@
  */
 import { dlopen, FFIType, suffix, ptr, toBuffer } from "bun:ffi";
 
-const libname = `lib/clib.${suffix}`;
+const libname = `../clib/clib.${suffix}`;
 const libpath = libname;
 
 const {

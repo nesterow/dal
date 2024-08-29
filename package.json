@@ -27,7 +27,7 @@
     "fmt": "prettier --write .",
     "build": "tsc",
     "prepublish": "tsc",
-    "preinstall": "cd binding && go build -buildmode=c-archive -o dal.a ./dal.go",
+    "preinstall": "cd binding && go build -buildmode=c-archive -o dal.a ./dal.go && cd ../clib && go build -o ./clib.dylib -buildmode=c-shared ./main.go",
     "postinstall": "node-gyp configure build"
   }
 }
