@@ -5,7 +5,7 @@ type RowIterator = {
   free: () => void;
 };
 type SQLite = {
-  InitSQLite: (pragmas: Buffer) => void;
-  RowIterator: (input: Buffer) => RowIterator;
+  initSQLite: (pragmas: Buffer) => void;
+  rowIterator: (input: Buffer) => RowIterator;
 };
 export default require("../build/Release/dal.node") as SQLite;

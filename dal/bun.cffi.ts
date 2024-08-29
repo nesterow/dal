@@ -1,5 +1,5 @@
 import Builder from "./Builder";
-import Binding from "./Binding";
+import Bunding from "./Bunding";
 import { encodeRequest, decodeRows, decodeResponse } from "./Protocol";
 import type { ExecResult } from "./Protocol";
 
@@ -8,7 +8,7 @@ type Options = {
 };
 
 /**
- * Allows to use SQLite databases in a NodeJS process.
+ * Allows to use SQLite databases in BunJS
  */
 export default class CBuilder<
   I extends abstract new (...args: any) => any,
@@ -22,12 +22,16 @@ export default class CBuilder<
   async *Rows<T = InstanceType<I>>(): AsyncGenerator<T> {
     this.formatRequest();
     const req = Buffer.from(encodeRequest(this.request));
-    const iter = Binding.rowIterator(req);
+    const iter = Bunding.rowIterator(req);
     for (;;) {
       const response = iter.next();
+      if (response === null) {
+        iter.cleanup();
+        break;
+      }
       const rows = decodeRows(response);
       if (rows.length === 0) {
-        iter.free();
+        iter.cleanup();
         break;
       }
       for (const row of rows) {
@@ -50,8 +54,12 @@ export default class CBuilder<
   async Exec(): Promise<ExecResult> {
     this.formatRequest();
     const req = Buffer.from(encodeRequest(this.request));
-    const iter = Binding.rowIterator(req);
+    const iter = Bunding.rowIterator(req);
     const response = iter.next();
+    if (response === null) {
+      iter.cleanup();
+      throw new Error("No response");
+    }
     return decodeResponse(response);
   }
 }

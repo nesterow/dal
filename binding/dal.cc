@@ -33,8 +33,8 @@ static Napi::Object RowIterator(const Napi::CallbackInfo& args) {
 
 
 static Napi::Object Init(Napi::Env env, Napi::Object exports) {
-  exports["InitSQLite"] = Napi::Function::New(env, _InitSQLite);
-  exports["RowIterator"] = Napi::Function::New(env, RowIterator);
+  exports["initSQLite"] = Napi::Function::New(env, _InitSQLite);
+  exports["rowIterator"] = Napi::Function::New(env, RowIterator);
   return exports;
 }
 

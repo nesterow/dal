@@ -35,11 +35,9 @@ total: ${Mb(this.avg_heapTotal)} Mb`);
   }
 }
 
-
 const stats = new Stats();
 let prevMem = process.memoryUsage();
 stats.add(prevMem);
-
 
 function MEM(when = "") {
   const mem = process.memoryUsage();
@@ -51,7 +49,6 @@ external: ${Mb(mem.external)} Mb [delta> ${mem.external - prevMem.external}]
 buffers: ${Mb(mem.heapUsed)} Mb [delta> ${mem.heapUsed - prevMem.heapUsed}]
 total: ${Mb(mem.heapTotal)} Mb [delta> ${mem.heapTotal - prevMem.heapTotal}]`);
 }
-
 
 console.time("Time to end");
 MEM("START");

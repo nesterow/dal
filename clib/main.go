@@ -3,7 +3,9 @@ package main
 // #include <stdlib.h>
 // #include <stdio.h>
 import "C"
+
 import (
+	"fmt"
 	"strings"
 	"unsafe"
 
@@ -18,14 +20,17 @@ var (
 )
 
 //export InitSQLite
-func InitSQLite(pragmas string) {
+func InitSQLite(params *C.char) {
+	pragmas := C.GoString(params)
 	pragmasArray := strings.Split(pragmas, ";")
 	facade.InitSQLite(pragmasArray)
 }
 
 //export CreateRowIterator
-func CreateRowIterator(input []byte) C.int {
+func CreateRowIterator(data *C.char, size C.int) C.int {
 	var it = &facade.RowsIter{}
+	input := C.GoBytes(unsafe.Pointer(data), size)
+	fmt.Println("input", input)
 	it.Exec(input)
 	ptr := C.int(len(iterators))
 	iterators[len(iterators)] = it
@@ -53,12 +58,17 @@ func GetLen(idx C.int) C.int {
 	return itersize[int(idx)]
 }
 
-//export FreeIter
-func FreeIter(itid C.int) {
+//export Cleanup
+func Cleanup(itid C.int) {
 	it := iterators[int(itid)]
 	it.Close()
 	delete(iterators, int(itid))
 	delete(itersize, int(itid))
+}
+
+//export Free
+func Free(ptr unsafe.Pointer) {
+	C.free(ptr)
 }
 
 func main() {}
