@@ -1,9 +1,14 @@
-const fs = require("fs");
-const dal = require("../../build/Release/dal.node");
+import fs from "fs";
+import dal from "../Bunding";
 
 const Mb = (num) => Math.round(num / 1024 / 1024);
 
 class Stats {
+  avg_rss;
+  avg_heapTotal;
+  avg_heapUsed;
+  avg_external;
+  calls;
   constructor() {
     this.calls = 0;
     this.avg_rss = 0;
@@ -55,12 +60,12 @@ MEM("START");
 
 const buf = fs.readFileSync("./pkg/__test__/proto_test.msgpack");
 
-const Iterator = dal.RowIterator(buf);
+const Iterator = dal.rowIterator(buf);
 MEM("AFTER INIT");
 
 let dataTransferedBytes = 0;
 for (let i = 0; i < 100000000; i++) {
-  const b = Iterator.next();
+  const b = Iterator.next()!;
   if (b.length === 0) {
     break;
   }
@@ -72,7 +77,7 @@ for (let i = 0; i < 100000000; i++) {
 
 MEM("AFTER ITERATION");
 
-Iterator.free();
+Iterator.cleanup();
 MEM("AFTER CLEANUP");
 
 console.log("\nData transfered: ", Mb(dataTransferedBytes), "Mb");

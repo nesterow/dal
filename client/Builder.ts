@@ -187,7 +187,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
   }
   async Query<T = InstanceType<I>>(): Promise<T[]> {
     const rows = this.Rows();
-    const result = [];
+    const result: T[] = [];
     for await (const row of rows) {
       result.push(row);
     }

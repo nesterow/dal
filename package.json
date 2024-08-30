@@ -21,9 +21,10 @@
   },
   "scripts": {
     "test:client": "bun test:*",
-    "test:dal": "bun test dal/__test__",
-    "test:serve": "cd dal/__test__/srv && go run main.go",
-    "bench:node": "node ./dal/__test__/bench.node.cjs",
+    "test:dal": "bun test client/__test__",
+    "test:serve": "cd client/__test__/srv && go run main.go",
+    "bench:node": "node ./client/__test__/bench.node.cjs",
+    "bench:bun": "bun ./client/__test__/bench.bun.ts",
     "fmt": "prettier --write .",
     "build": "tsc",
     "prepublish": "tsc",

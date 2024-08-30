@@ -2,9 +2,10 @@
  * This file is responsible for binding the C library to the Bun runtime.
  */
 import { dlopen, FFIType, suffix, ptr, toBuffer } from "bun:ffi";
+import { join } from "path";
 
-const libname = `../clib/clib.${suffix}`;
-const libpath = libname;
+const libname = `clib.${suffix}`;
+const libpath = join("clib", libname);
 
 const {
   symbols: { InitSQLite, CreateRowIterator, NextRow, GetLen, Free, Cleanup },
@@ -46,8 +47,8 @@ function rowIterator(buf: Buffer) {
     if (pointer === null) {
       return null;
     }
-    const buf = toBuffer(pointer, 0, GetLen(iter));
-    //Free(pointer) //should be resolved by GC;
+    const buf = Buffer.from(toBuffer(pointer, 0, GetLen(iter)));
+    Free(pointer);
     return buf;
   };
 
