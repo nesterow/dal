@@ -64,6 +64,7 @@ for (let i = 0; i < 100000000; i++) {
   if (b.length === 0) {
     break;
   }
+  dataTransferedBytes += buf.length;
   dataTransferedBytes += b.length;
   if (i % 1000000 === 0) {
     MEM(`ITERATION ${i}`);
