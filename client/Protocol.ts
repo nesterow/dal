@@ -31,47 +31,55 @@ export function encodeRequest(request: Request): Uint8Array {
   return encode(request);
 }
 
-export function decodeResponse(input: Uint8Array): ExecResult {
-  const res = decode(input) as {
-    i: number;
-    ra: number;
-    li: number;
-    m?: string;
-  };
-  return {
-    Id: res.i,
-    RowsAffected: res.ra,
-    LastInsertId: res.li,
-    Msg: res.m,
-  };
+export function decodeResponse(input: Uint8Array): ExecResult | null {
+  try {
+    const res = decode(input) as {
+      i: number;
+      ra: number;
+      li: number;
+      m?: string;
+    };
+    return {
+      Id: res.i,
+      RowsAffected: res.ra,
+      LastInsertId: res.li,
+      Msg: res.m,
+    };
+  } catch (e) {
+    return null;
+  }
 }
 
 const ROW_TAG = [0x81, 0xa1, 0x72];
 
-export function decodeRows(input: Uint8Array): Row[] {
-  const rows = [];
-  let count = 0;
-  let buf = [];
-  while (count < input.length) {
-    if (input.at(count) != 0x81) {
-      buf.push(input.at(count));
-      count++;
-      continue;
+export function decodeRows(input: Uint8Array): Row[] | null {
+  try {
+    const rows = [];
+    let count = 0;
+    let buf = [];
+    while (count < input.length) {
+      if (input.at(count) != 0x81) {
+        buf.push(input.at(count));
+        count++;
+        continue;
+      }
+      const [a, b, c] = ROW_TAG;
+      const [aa, bb, cc] = input.slice(count, count + 4);
+      if (aa == a && bb == b && cc == c) {
+        rows.push([...ROW_TAG, ...buf]);
+        buf = [];
+        count += 3;
+      } else {
+        buf.push(input.at(count));
+        count++;
+      }
     }
-    const [a, b, c] = ROW_TAG;
-    const [aa, bb, cc] = input.slice(count, count + 4);
-    if (aa == a && bb == b && cc == c) {
-      rows.push([...ROW_TAG, ...buf]);
-      buf = [];
-      count += 3;
-    } else {
-      buf.push(input.at(count));
-      count++;
-    }
+    rows.push([...ROW_TAG, ...buf]);
+    rows.shift();
+    return rows.map((row) => decode(new Uint8Array(row as number[]))) as Row[];
+  } catch (e) {
+    return null;
   }
-  rows.push([...ROW_TAG, ...buf]);
-  rows.shift();
-  return rows.map((row) => decode(new Uint8Array(row as number[]))) as Row[];
 }
 
 export async function* decodeRowsIterator(
@@ -84,7 +92,7 @@ export async function* decodeRowsIterator(
       break;
     }
     const rows = decodeRows(value);
-    for (const row of rows) {
+    for (const row of rows!) {
       yield row;
     }
   }

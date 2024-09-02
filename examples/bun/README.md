@@ -1,4 +1,4 @@
-# bun-dal-exmaple
+# bun-dal-example
 
 To install dependencies:
 

@@ -5,7 +5,6 @@ package main
 import "C"
 
 import (
-	"fmt"
 	"strings"
 	"unsafe"
 
@@ -30,7 +29,6 @@ func InitSQLite(params *C.char) {
 func CreateRowIterator(data *C.char, size C.int) C.int {
 	var it = &facade.RowsIter{}
 	input := C.GoBytes(unsafe.Pointer(data), size)
-	fmt.Println("input", input)
 	it.Exec(input)
 	ptr := C.int(len(iterators))
 	iterators[len(iterators)] = it

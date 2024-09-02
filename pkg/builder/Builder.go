@@ -116,12 +116,12 @@ func (b *Builder) Sort(sort Map) *Builder {
 	return b
 }
 
-func (b *Builder) Limit(limit int) *Builder {
+func (b *Builder) Limit(limit int64) *Builder {
 	b.Parts.LimitExp = fmt.Sprintf("LIMIT %d", limit)
 	return b
 }
 
-func (b *Builder) Offset(offset int) *Builder {
+func (b *Builder) Offset(offset int64) *Builder {
 	b.Parts.OffsetExp = fmt.Sprintf("OFFSET %d", offset)
 	return b
 }

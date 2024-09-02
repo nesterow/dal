@@ -5,7 +5,7 @@ import { dlopen, FFIType, suffix, ptr, toBuffer } from "bun:ffi";
 import { join } from "path";
 
 const libname = `clib.${suffix}`;
-const libpath = join("clib", libname);
+const libpath = join(import.meta.dir, "..", "clib", libname);
 
 const {
   symbols: { InitSQLite, CreateRowIterator, NextRow, GetLen, Free, Cleanup },

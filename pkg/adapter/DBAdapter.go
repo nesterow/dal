@@ -114,6 +114,7 @@ func (a *DBAdapter) CleanUp() {
 }
 
 func (a *DBAdapter) Query(req Query) (*sql.Rows, error) {
+	fmt.Println(req)
 	db, err := a.Open(req.Db)
 	if err != nil {
 		return nil, err
@@ -132,6 +133,7 @@ func (a *DBAdapter) Query(req Query) (*sql.Rows, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return sfmt.Query(req.Data...)
 }
 

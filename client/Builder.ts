@@ -97,11 +97,11 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     this.methodCalls.set("Find", [filter]);
     return this;
   }
-  Select(fields: string[]): Builder<I> {
-    this.methodCalls.set("Select", fields);
+  Select(fields: Record<string, any>): Builder<I> {
+    this.methodCalls.set("Select", [fields]);
     return this;
   }
-  Fields(fields: string[]): Builder<I> {
+  Fields(fields: Record<string, any>): Builder<I> {
     this.Select(fields);
     return this;
   }
@@ -207,6 +207,6 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       throw new Error(await response.text());
     }
     const buf = await response.arrayBuffer();
-    return decodeResponse(new Uint8Array(buf));
+    return decodeResponse(new Uint8Array(buf))!;
   }
 }

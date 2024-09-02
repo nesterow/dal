@@ -1,7 +1,12 @@
 import Builder from "./Builder";
-import Binding from "./Library";
+import Bunding from "./Library";
 import { encodeRequest, decodeRows, decodeResponse } from "./Protocol";
 import type { ExecResult } from "./Protocol";
+
+//@ts-ignore
+const Binding = Bunding.default ?? Bunding;
+
+Binding.initSQLite(Buffer.from(" "));
 
 type Options = {
   database: string;
@@ -24,11 +29,15 @@ export default class CBuilder<
     const req = Buffer.from(encodeRequest(this.request));
     const iter = Binding.rowIterator(req);
     for (;;) {
-      const response = iter.next();
+      const response = iter.next() as Buffer;
+      const error = decodeResponse(response);
+      if (error?.Msg) {
+        throw new Error(error.Msg);
+      }
       const rows = decodeRows(response);
-      if (rows.length === 0) {
+      if (!rows || rows.length === 0) {
         iter.cleanup();
-        break;
+        return;
       }
       for (const row of rows) {
         if (this.headerRow === null) {
@@ -52,6 +61,6 @@ export default class CBuilder<
     const req = Buffer.from(encodeRequest(this.request));
     const iter = Binding.rowIterator(req);
     const response = iter.next();
-    return decodeResponse(response);
+    return decodeResponse(response)!;
   }
 }
