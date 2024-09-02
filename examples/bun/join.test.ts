@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import path from "path";
-import DAL from "@nesterow/dal/client/libdal";
+import DAL from "@nesterow/dal/client/native";
 
 // in this case we need to use absolute path
 const DATABASE_PATH = path.join(import.meta.dir, "..", "data", "chinook.db");
@@ -37,16 +37,17 @@ describe("Query Interface", () => {
         "ar.Name": { $glob: "A*" },
       })
       .Fields({
-        "tr.TrackId" : "TrackId",
-        "tr.Name" : "TrackName",
-        "ar.Name" : "ArtistName",
-        "al.Title" : "AlbumTitle",
+        "tr.TrackId": "TrackId",
+        "tr.Name": "TrackName",
+        "ar.Name": "ArtistName",
+        "al.Title": "AlbumTitle",
       })
       .Limit(10)
       .As(Album)
       .Rows();
 
-    for await (const item of items) {
+    for await (const result of items) {
+      const [item, error] = result;
       console.log(item);
     }
 

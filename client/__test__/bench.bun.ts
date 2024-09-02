@@ -1,5 +1,5 @@
 import fs from "fs";
-import dal from "../Bunding";
+import dal from "../BunFFI";
 
 const Mb = (num) => Math.round(num / 1024 / 1024);
 

@@ -6,5 +6,5 @@ type Response struct {
 	Id           uint32 `msg:"i"`
 	RowsAffected int64  `msg:"ra"`
 	LastInsertId int64  `msg:"li"`
-	Msg          string `msg:"m"`
+	Error        string `msg:"e"`
 }

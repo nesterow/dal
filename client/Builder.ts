@@ -1,4 +1,4 @@
-import type { Request, ExecResult } from "./Protocol";
+import type { Request, ExecResult, IError } from "./Protocol";
 import {
   METHODS,
   encodeRequest,
@@ -163,7 +163,7 @@ export default class Builder<I extends abstract new (...args: any) => any> {
     this.dtoTemplate = template;
     return this;
   }
-  async *Rows<T = InstanceType<I>>(): AsyncGenerator<T> {
+  async *Rows<T = InstanceType<I>>(): AsyncGenerator<[T, IError]> {
     this.formatRequest();
     const response = await fetch(this.url, {
       method: "POST",
@@ -174,26 +174,38 @@ export default class Builder<I extends abstract new (...args: any) => any> {
       },
     });
     if (response.status !== 200) {
-      throw new Error(await response.text());
+      return [[], await response.text()];
     }
     const iterator = decodeRowsIterator(response.body!);
-    for await (const row of iterator) {
+    for await (const result of iterator) {
+      const [row, err] = result;
+      if (err) {
+        yield [{} as T, err];
+        return;
+      }
       if (this.headerRow === null) {
         this.headerRow = row.r;
         continue;
       }
-      yield this.formatRow(row.r);
+      yield [this.formatRow(row.r), null];
     }
   }
   async Query<T = InstanceType<I>>(): Promise<T[]> {
     const rows = this.Rows();
     const result: T[] = [];
-    for await (const row of rows) {
+    for await (const res of rows) {
+      const [row, error] = res;
+      if (error) {
+        if (String(error).includes("RangeError")) {
+          break;
+        }
+        throw new Error(error);
+      }
       result.push(row);
     }
     return result;
   }
-  async Exec(): Promise<ExecResult> {
+  async Exec(): Promise<[ExecResult, IError]> {
     this.formatRequest();
     const response = await fetch(this.url, {
       method: "POST",

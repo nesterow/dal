@@ -39,7 +39,7 @@ func (r *RowsIter) Exec(input []byte) {
 	query, err := req.Parse(adapter.GetDialect(db.Type))
 	if err != nil || e != nil {
 		res := proto.Response{
-			Msg: "failed to unmarshal request",
+			Error: "failed to unmarshal request",
 		}
 		r.Result, _ = res.MarshalMsg(nil)
 		return
@@ -48,7 +48,7 @@ func (r *RowsIter) Exec(input []byte) {
 		result, err := db.Exec(query)
 		if err != nil {
 			res := proto.Response{
-				Msg: err.Error(),
+				Error: err.Error(),
 			}
 			r.Result, _ = res.MarshalMsg(nil)
 			return
@@ -66,7 +66,7 @@ func (r *RowsIter) Exec(input []byte) {
 	rows, err := db.Query(query)
 	if err != nil {
 		res := proto.Response{
-			Msg: err.Error(),
+			Error: err.Error(),
 		}
 		r.Result, _ = res.MarshalMsg(nil)
 		return

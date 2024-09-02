@@ -13,7 +13,7 @@ type SQLite = {
 let Library: SQLite;
 
 if (process.isBun) {
-  Library = require("./Bunding") as SQLite;
+  Library = require("./BunFFI") as SQLite;
 } else {
   Library = require("./Binding") as SQLite;
 }

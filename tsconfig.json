@@ -1,5 +1,5 @@
 {
-  "files": ["client/index.ts", "client/Binding.ts", "client/libdal.ts"],
+  "files": ["client/index.ts", "client/Binding.ts", "client/native.ts"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",

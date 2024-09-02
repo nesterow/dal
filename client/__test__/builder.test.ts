@@ -21,8 +21,8 @@ test("Rows iter, no format", async () => {
       id: 1,
     })
     .Rows<any[]>();
-  for await (const row of rows) {
-    //console.log(row);
+  for await (const result of rows) {
+    const [row, error] = result;
     expect(row.length).toBe(3);
   }
   expect(true).toBe(true);

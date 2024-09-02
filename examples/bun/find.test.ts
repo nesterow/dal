@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import path from "path";
-import DAL from "@nesterow/dal/client/libdal";
+import DAL from "@nesterow/dal/client/native";
 
 // in this case we need to use absolute path
 const DATABASE_PATH = path.join(import.meta.dir, "..", "data", "chinook.db");
@@ -10,7 +10,7 @@ const db = new DAL({
 });
 
 describe("Query Interface", () => {
-  test(".Find", async () => {
+  test(".Find [find 10 artists whose names start with 'A']", async () => {
     const items = db
       .In("artists")
       .Find({
@@ -19,14 +19,15 @@ describe("Query Interface", () => {
       .Limit(10)
       .Rows();
 
-    for await (const item of items) {
+    for await (const result of items) {
+      const [item, error] = result;
       console.log(item);
     }
 
     expect(true).toBe(true);
   });
 
-  test(".Find.As", async () => {
+  test(".Find.As [find 5 artists whose names start with 'B'; Represent each row as an Artist object]", async () => {
     class Artist {
       ArtistId = 0;
       Name = "";
@@ -38,13 +39,23 @@ describe("Query Interface", () => {
         name: { $glob: "B*" },
       })
       .As(Artist)
-      .Limit(1)
+      .Limit(5)
       .Rows();
 
-    for await (const item of items) {
-      console.log(item);
+    for await (const result of items) {
+      const [item, error] = result;
+      console.log(123, item);
     }
-    console.log("done");
+
+    const all_rows = await db
+      .In("artists")
+      .Find({
+        name: { $glob: "B*" },
+      })
+      .As(Artist)
+      .Limit(5)
+      .Query();
+
     expect(true).toBe(true);
   });
 });
